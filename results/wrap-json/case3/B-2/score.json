@@ -1,0 +1,64 @@
+{
+  "case": "case3",
+  "arm": "B",
+  "rep": 2,
+  "test_passed": true,
+  "cost_usd": 0.08861110000000001,
+  "turns": 9,
+  "input": 18,
+  "cache_write": 13267,
+  "cache_read": 133871,
+  "output": 2212,
+  "first_cache_read": 10750,
+  "headroom": {
+    "requests_with_messages": 8,
+    "tokens_original": 94846,
+    "tokens_optimized": 92431
+  },
+  "mcp": {
+    "headroom": "connected",
+    "serena": "connected"
+  },
+  "tools": {
+    "Read": 1,
+    "Grep": 2,
+    "Bash": 5
+  },
+  "comparison": {
+    "shared": [
+      "web/src/locales/ar.json",
+      "web/src/locales/ca.json",
+      "web/src/locales/cs.json",
+      "web/src/locales/de.json",
+      "web/src/locales/en-GB.json",
+      "web/src/locales/es.json",
+      "web/src/locales/fa.json",
+      "web/src/locales/fr.json",
+      "web/src/locales/gl.json",
+      "web/src/locales/hi.json",
+      "web/src/locales/hr.json",
+      "web/src/locales/hu.json",
+      "web/src/locales/id.json",
+      "web/src/locales/it.json",
+      "web/src/locales/ja.json",
+      "web/src/locales/ka-GE.json",
+      "web/src/locales/ko.json",
+      "web/src/locales/mr.json",
+      "web/src/locales/nb.json",
+      "web/src/locales/nl.json",
+      "web/src/locales/pl.json",
+      "web/src/locales/pt-BR.json",
+      "web/src/locales/pt-PT.json",
+      "web/src/locales/ru.json",
+      "web/src/locales/sl.json",
+      "web/src/locales/sv.json",
+      "web/src/locales/th.json",
+      "web/src/locales/tr.json",
+      "web/src/locales/uk.json",
+      "web/src/locales/vi.json"
+    ],
+    "missing": [],
+    "extra": [],
+    "merged_total": 30
+  }
+}

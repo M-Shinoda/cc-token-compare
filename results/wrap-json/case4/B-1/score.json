@@ -1,0 +1,35 @@
+{
+  "case": "case4",
+  "arm": "B",
+  "rep": 1,
+  "test_passed": true,
+  "cost_usd": 0.1370987,
+  "turns": 10,
+  "input": 24,
+  "cache_write": 20085,
+  "cache_read": 230377,
+  "output": 3565,
+  "first_cache_read": 10750,
+  "headroom": {
+    "requests_with_messages": 11,
+    "tokens_original": 164968,
+    "tokens_optimized": 159787
+  },
+  "mcp": {
+    "headroom": "connected",
+    "serena": "connected"
+  },
+  "tools": {
+    "Bash": 9
+  },
+  "comparison": {
+    "shared": [
+      "web/package.json",
+      "web/pnpm-lock.yaml",
+      "web/src/utils/uuid.ts"
+    ],
+    "missing": [],
+    "extra": [],
+    "merged_total": 3
+  }
+}

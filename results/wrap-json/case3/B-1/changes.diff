@@ -1,0 +1,596 @@
+diff --git a/web/src/locales/ar.json b/web/src/locales/ar.json
+index eb3b902..deb0b6a 100644
+--- a/web/src/locales/ar.json
++++ b/web/src/locales/ar.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "أنشئ حسابك",
+     "host-tip": "أنت تسجل في الموقع كمضيف",
+     "new-password": "كلمة المرور الجديدة",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "أعد كلمة المرور الجديدة",
+     "sign-in-tip": "هل لديك حساب بالفعل؟",
+     "sign-up-tip": "ليس لديك حساب بعد؟"
+@@ -155,6 +156,7 @@
+     "direction-asc": "تصاعدي",
+     "direction-desc": "تنازلي",
+     "display-time": "عرض الوقت",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "يحتوي على كود",
+       "has-link": "يحتوي على رابط",
+diff --git a/web/src/locales/ca.json b/web/src/locales/ca.json
+index 383021e..5779dc6 100644
+--- a/web/src/locales/ca.json
++++ b/web/src/locales/ca.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Crea el teu compte",
+     "host-tip": "T'estàs registrant com a amfitrió.",
+     "new-password": "Nova contrasenya",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Repeteix la contrasenya",
+     "sign-in-tip": "Ja tens un compte?",
+     "sign-up-tip": "Encara no tens un compte?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Ascendent",
+     "direction-desc": "Descendent",
+     "display-time": "Mostra l'hora",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "téCodi",
+       "has-link": "téEnllaç",
+diff --git a/web/src/locales/cs.json b/web/src/locales/cs.json
+index 8955aa1..621a7bf 100644
+--- a/web/src/locales/cs.json
++++ b/web/src/locales/cs.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Založit nový účet",
+     "host-tip": "Registrujete se jako Hostitel stránek.",
+     "new-password": "Nové heslo",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Zopakujte nové heslo",
+     "sign-in-tip": "Už máte účet?",
+     "sign-up-tip": "Ještě nemáte účet?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Vzestupně",
+     "direction-desc": "Sestupně",
+     "display-time": "Doba zobrazení",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "maKod",
+       "has-link": "maOdkaz",
+diff --git a/web/src/locales/de.json b/web/src/locales/de.json
+index 1ec697b..5543a22 100644
+--- a/web/src/locales/de.json
++++ b/web/src/locales/de.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Benutzerkonto anlegen",
+     "host-tip": "Du registrierst dich als Host dieser Seite.",
+     "new-password": "Neues Passwort",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Neues Passwort wiederholen",
+     "sign-in-tip": "Bereits ein Benutzerkonto?",
+     "sign-up-tip": "Noch kein Benutzerkonto?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Aufsteigend",
+     "direction-desc": "Absteigend",
+     "display-time": "Anzeigedatum",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "hatCode",
+       "has-link": "hatLink",
+diff --git a/web/src/locales/en-GB.json b/web/src/locales/en-GB.json
+index 3468b66..403a1c2 100644
+--- a/web/src/locales/en-GB.json
++++ b/web/src/locales/en-GB.json
+@@ -8,5 +8,11 @@
+         "title": "Customise Server"
+       }
+     }
++  },
++  "auth": {
++    "protected-memo-notice": "This memo is not public. Sign in to continue."
++  },
++  "memo": {
++    "failed-to-load": "Failed to load memo."
+   }
+ }
+diff --git a/web/src/locales/es.json b/web/src/locales/es.json
+index 2e2ca4f..6e201c7 100644
+--- a/web/src/locales/es.json
++++ b/web/src/locales/es.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Crea tu cuenta",
+     "host-tip": "Te estás registrando como anfitrión del sitio.",
+     "new-password": "Nueva contraseña",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Repite la nueva contraseña",
+     "sign-in-tip": "¿Ya tienes una cuenta?",
+     "sign-up-tip": "¿Aún no tienes una cuenta?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Ascendente",
+     "direction-desc": "Descendente",
+     "display-time": "Hora de visualización",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "tieneCódigo",
+       "has-link": "tieneEnlace",
+diff --git a/web/src/locales/fa.json b/web/src/locales/fa.json
+index 4f5a7b4..24fc8e6 100644
+--- a/web/src/locales/fa.json
++++ b/web/src/locales/fa.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "حساب کاربری خود را ایجاد کنید.",
+     "host-tip": "حساب شما به عنوان مدیر سایت تعریف خواهد شد.",
+     "new-password": "گذرواژه جدید",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "گذرواژه جدید را تکرار کنید",
+     "sign-in-tip": "آیا حساب کاربری تعریف شده دارید؟",
+     "sign-up-tip": "آیا حساب کاربری تعریف شده ندارید؟"
+@@ -155,6 +156,7 @@
+     "direction-asc": "صعودی",
+     "direction-desc": "نزولی",
+     "display-time": "زمان نمایش",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "دارای کد",
+       "has-link": "دارای پیوند",
+diff --git a/web/src/locales/fr.json b/web/src/locales/fr.json
+index 4230496..3677207 100644
+--- a/web/src/locales/fr.json
++++ b/web/src/locales/fr.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Créez votre compte",
+     "host-tip": "Vous vous inscrivez en tant qu'hôte du site.",
+     "new-password": "Nouveau mot de passe",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Répétez le nouveau mot de passe",
+     "sign-in-tip": "Vous avez déjà un compte ?",
+     "sign-up-tip": "Vous n'avez pas encore de compte ?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Ascendant",
+     "direction-desc": "Descendant",
+     "display-time": "Afficher l'heure",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "aCode",
+       "has-link": "aLien",
+diff --git a/web/src/locales/gl.json b/web/src/locales/gl.json
+index ebdfc5c..23626aa 100644
+--- a/web/src/locales/gl.json
++++ b/web/src/locales/gl.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Crea a túa conta",
+     "host-tip": "Estás creando a conta como Site Host.",
+     "new-password": "Novo contrasinal",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Repite o novo contrasinal",
+     "sign-in-tip": "Xa tes unha conta?",
+     "sign-up-tip": "Aínda non tes unha conta?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Ascendente",
+     "direction-desc": "Descendente",
+     "display-time": "Mostrar hora",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "hasCode",
+       "has-link": "hasLink",
+diff --git a/web/src/locales/hi.json b/web/src/locales/hi.json
+index 446b62e..4c321a5 100644
+--- a/web/src/locales/hi.json
++++ b/web/src/locales/hi.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "अपना खाता बनाएं",
+     "host-tip": "आप साइट होस्ट के रूप में पंजीकृत हो रहे हैं।",
+     "new-password": "नया पासवर्ड",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "नया पासवर्ड दोहराएं",
+     "sign-in-tip": "क्या आपके पास पहले से खाता है?",
+     "sign-up-tip": "अभी तक खाता नहीं है?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "आरोही",
+     "direction-desc": "अवरोही",
+     "display-time": "प्रदर्शन समय",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "कोड है",
+       "has-link": "लिंक है",
+diff --git a/web/src/locales/hr.json b/web/src/locales/hr.json
+index 33a45a5..0fa8ea4 100644
+--- a/web/src/locales/hr.json
++++ b/web/src/locales/hr.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Stvori svoj račun",
+     "host-tip": "Registriraš se kao Vlasnik sajta.",
+     "new-password": "Nova lozinka",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Ponovi novu lozinku",
+     "sign-in-tip": "Račun već postoji?",
+     "sign-up-tip": "Još nemaš račun?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Uzlazno",
+     "direction-desc": "Silazno",
+     "display-time": "Vrijeme prikaza",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "imaKod",
+       "has-link": "imaLink",
+diff --git a/web/src/locales/hu.json b/web/src/locales/hu.json
+index 46393b3..c41152c 100644
+--- a/web/src/locales/hu.json
++++ b/web/src/locales/hu.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Fiók létrehozása",
+     "host-tip": "A weboldal rendszergazdájaként regisztrál.",
+     "new-password": "Új jelszó",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Jelszó ismét",
+     "sign-in-tip": "Már van fiókod?",
+     "sign-up-tip": "Még nincs fiókod?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Növekvő",
+     "direction-desc": "Csökkenő",
+     "display-time": "Megjelenítési idő",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "vanKód",
+       "has-link": "vanLink",
+diff --git a/web/src/locales/id.json b/web/src/locales/id.json
+index 7804bbf..c9a047e 100644
+--- a/web/src/locales/id.json
++++ b/web/src/locales/id.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Buat akun Anda",
+     "host-tip": "Anda mendaftar sebagai Host Situs.",
+     "new-password": "Kata sandi baru",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Ulangi kata sandi baru",
+     "sign-in-tip": "Sudah memiliki akun?",
+     "sign-up-tip": "Belum memiliki akun?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Menaik",
+     "direction-desc": "Menurun",
+     "display-time": "Waktu Tampil",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "Memiliki kode",
+       "has-link": "Memiliki tautan",
+diff --git a/web/src/locales/it.json b/web/src/locales/it.json
+index aaecaba..70ff997 100644
+--- a/web/src/locales/it.json
++++ b/web/src/locales/it.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Crea il tuo account",
+     "host-tip": "Ti stai registrando come proprietario del sito.",
+     "new-password": "Nuova password",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Ripeti la nuova password",
+     "sign-in-tip": "Hai già un account?",
+     "sign-up-tip": "Non hai ancora un account?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Crescente",
+     "direction-desc": "Decrescente",
+     "display-time": "Orario di visualizzazione",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "haCodice",
+       "has-link": "haLink",
+diff --git a/web/src/locales/ja.json b/web/src/locales/ja.json
+index 85e5ea1..2148856 100644
+--- a/web/src/locales/ja.json
++++ b/web/src/locales/ja.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "アカウントを作成",
+     "host-tip": "管理者として登録されます。",
+     "new-password": "新しいパスワード",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "新しいパスワードを確認(繰り返し)",
+     "sign-in-tip": "すでにアカウントを持っていますか?",
+     "sign-up-tip": "アカウントを持っていませんか?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "昇順",
+     "direction-desc": "降順",
+     "display-time": "表示時間",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "コードあり",
+       "has-link": "リンクあり",
+diff --git a/web/src/locales/ka-GE.json b/web/src/locales/ka-GE.json
+index 14951b9..eeaa032 100644
+--- a/web/src/locales/ka-GE.json
++++ b/web/src/locales/ka-GE.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "შექმენით თქვენი ანგარიში",
+     "host-tip": "თქვენ რეგისტრირდებით როგორც საიტის მასპინძელი.",
+     "new-password": "ახალი პაროლი",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "გაიმეორეთ ახალი პაროლი",
+     "sign-in-tip": "დაქვემდებარებული გაქვთ ანგარიში?",
+     "sign-up-tip": "ჯერ არ გაქვთ ანგარიში?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "ზრდადობით",
+     "direction-desc": "კლებადობით",
+     "display-time": "ჩვენების დრო",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "კოდიარის",
+       "has-link": "ლინკიარის",
+diff --git a/web/src/locales/ko.json b/web/src/locales/ko.json
+index c9723d5..33d0cba 100644
+--- a/web/src/locales/ko.json
++++ b/web/src/locales/ko.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "계정 만들기",
+     "host-tip": "사이트 주인으로서의 계정을 등록합니다.",
+     "new-password": "새 비밀번호",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "새 비밀번호 재확인",
+     "sign-in-tip": "이미 계정이 있으신가요?",
+     "sign-up-tip": "아직 계정이 없으신가요?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "오름차순",
+     "direction-desc": "내림차순",
+     "display-time": "표시 시간",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "코드있음",
+       "has-link": "링크있음",
+diff --git a/web/src/locales/mr.json b/web/src/locales/mr.json
+index 49bad3e..f5479a9 100644
+--- a/web/src/locales/mr.json
++++ b/web/src/locales/mr.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "तुमचे खाते तयार करा",
+     "host-tip": "तुम्ही साइट होस्ट म्हणून नोंदणी करत आहात.",
+     "new-password": "नवीन पासवर्ड",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "नवीन पासवर्डची पुनरावृत्ती करा",
+     "sign-in-tip": "आधीपासूनच एक खाते आहे?",
+     "sign-up-tip": "अजून खाते नाही?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "आरोही",
+     "direction-desc": "अवरोही",
+     "display-time": "प्रदर्शन वेळ",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "कोड आहे",
+       "has-link": "लिंक आहे",
+diff --git a/web/src/locales/nb.json b/web/src/locales/nb.json
+index c3fb086..40c6e74 100644
+--- a/web/src/locales/nb.json
++++ b/web/src/locales/nb.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Opprett konto",
+     "host-tip": "Du registrerer deg som vert for nettstedet.",
+     "new-password": "Nytt passord",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Gjenta det nye passordet",
+     "sign-in-tip": "Har du allerede en konto?",
+     "sign-up-tip": "Har du ikke en konto enda?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Stigende",
+     "direction-desc": "Synkende",
+     "display-time": "Vis tid",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "harKode",
+       "has-link": "harLink",
+diff --git a/web/src/locales/nl.json b/web/src/locales/nl.json
+index 26e9174..41235b3 100644
+--- a/web/src/locales/nl.json
++++ b/web/src/locales/nl.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Maak je account",
+     "host-tip": "Je registreert je als Site Host.",
+     "new-password": "Nieuw wachtwoord",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Nieuw wachtwoord herhalen",
+     "sign-in-tip": "Al een account?",
+     "sign-up-tip": "Nog geen account?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Oplopend",
+     "direction-desc": "Aflopend",
+     "display-time": "Tijd weergeven",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "heeftCode",
+       "has-link": "heeftLink",
+diff --git a/web/src/locales/pl.json b/web/src/locales/pl.json
+index ab04ac2..d3cd71f 100644
+--- a/web/src/locales/pl.json
++++ b/web/src/locales/pl.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Utwórz swoje konto",
+     "host-tip": "Rejestrujesz się jako Gospodarz Strony.",
+     "new-password": "Nowe hasło",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Powtórz nowe hasło",
+     "sign-in-tip": "Masz już konto?",
+     "sign-up-tip": "Nie masz jeszcze konta?"
+@@ -156,6 +157,7 @@
+     "direction-asc": "Rosnąco",
+     "direction-desc": "Malejąco",
+     "display-time": "Wyświetl czas",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "ma kod",
+       "has-link": "ma link",
+diff --git a/web/src/locales/pt-BR.json b/web/src/locales/pt-BR.json
+index b576f04..0cf51e8 100644
+--- a/web/src/locales/pt-BR.json
++++ b/web/src/locales/pt-BR.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Crie sua conta",
+     "host-tip": "Você está se registrando como Administrador desta instância.",
+     "new-password": "Nova senha",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Repita a nova senha",
+     "sign-in-tip": "Já tem uma conta?",
+     "sign-up-tip": "Ainda não tem uma conta?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Crescente",
+     "direction-desc": "Decrescente",
+     "display-time": "Horário",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "temCódigo",
+       "has-link": "temLink",
+diff --git a/web/src/locales/pt-PT.json b/web/src/locales/pt-PT.json
+index bcf9738..5111e5e 100644
+--- a/web/src/locales/pt-PT.json
++++ b/web/src/locales/pt-PT.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Crie a sua conta",
+     "host-tip": "Está a registar-se como o anfitrião do site.",
+     "new-password": "Nova palavra-passe",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Repita a nova palavra-passe",
+     "sign-in-tip": "Já tem uma conta?",
+     "sign-up-tip": "Ainda não tem uma conta?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Ascendente",
+     "direction-desc": "Descendente",
+     "display-time": "Hora de exibição",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "temCódigo",
+       "has-link": "temLink",
+diff --git a/web/src/locales/ru.json b/web/src/locales/ru.json
+index 16f52d5..f4899e4 100644
+--- a/web/src/locales/ru.json
++++ b/web/src/locales/ru.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Создание учетной записи",
+     "host-tip": "Вы регистрируете учетную запись владельца сайта",
+     "new-password": "Новый пароль",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Повторить новый пароль",
+     "sign-in-tip": "У вас уже есть учетная запись?",
+     "sign-up-tip": "У вас еще нет учетной записи?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "По возрастанию",
+     "direction-desc": "По убыванию",
+     "display-time": "Время отображения",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "hasCode",
+       "has-link": "hasLink",
+diff --git a/web/src/locales/sl.json b/web/src/locales/sl.json
+index 7a56b87..4226f17 100644
+--- a/web/src/locales/sl.json
++++ b/web/src/locales/sl.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Ustvari nov račun",
+     "host-tip": "Registrirani ste kot gostitelj strani.",
+     "new-password": "Novo geslo",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Ponovi novo geslo",
+     "sign-in-tip": "Že imaš račun?",
+     "sign-up-tip": "Še nimaš računa?"
+@@ -156,6 +157,7 @@
+     "direction-asc": "Naraščajoče",
+     "direction-desc": "Padajoče",
+     "display-time": "Prikaži čas",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "imaKodo",
+       "has-link": "imaPovezavo",
+diff --git a/web/src/locales/sv.json b/web/src/locales/sv.json
+index b618f45..b542e00 100644
+--- a/web/src/locales/sv.json
++++ b/web/src/locales/sv.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Skapa ditt konto",
+     "host-tip": "Du registerar dig som webbplatsvärd.",
+     "new-password": "Nytt lösenord",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Upprepa det nya lösenordet",
+     "sign-in-tip": "Har du redan ett konto?",
+     "sign-up-tip": "Har du inget konto än?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Stigande",
+     "direction-desc": "Fallande",
+     "display-time": "Visa tid",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "harKod",
+       "has-link": "harLänk",
+diff --git a/web/src/locales/th.json b/web/src/locales/th.json
+index 0b5bcc3..abfd48a 100644
+--- a/web/src/locales/th.json
++++ b/web/src/locales/th.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "สร้างบัญชีใหม่",
+     "host-tip": "คุณกำลังลงทะเบียนเป็นโฮสต์ของไซต์",
+     "new-password": "รหัสผ่านใหม่",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "รหัสผ่านใหม่อีกครั้ง",
+     "sign-in-tip": "มีบัญชีอยู่แล้ว?",
+     "sign-up-tip": "ยังไม่มีบัญชี?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "จากน้อยไปมาก",
+     "direction-desc": "จากมากไปน้อย",
+     "display-time": "แสดงเวลา",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "มีโค้ด",
+       "has-link": "มีลิงก์",
+diff --git a/web/src/locales/tr.json b/web/src/locales/tr.json
+index 98aafcd..20a58ec 100644
+--- a/web/src/locales/tr.json
++++ b/web/src/locales/tr.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Hesabınızı oluşturun",
+     "host-tip": "Site Yöneticisi olarak kayıt oluyorsunuz.",
+     "new-password": "Yeni şifre",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Yeni şifreyi tekrar girin",
+     "sign-in-tip": "Zaten hesabınız var mı?",
+     "sign-up-tip": "Henüz hesabınız yok mu?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Artan",
+     "direction-desc": "Azalan",
+     "display-time": "Görüntüleme Zamanı",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "kodVar",
+       "has-link": "bağlantıVar",
+diff --git a/web/src/locales/uk.json b/web/src/locales/uk.json
+index c479c2b..c9de5a0 100644
+--- a/web/src/locales/uk.json
++++ b/web/src/locales/uk.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Створіть обліковий запис",
+     "host-tip": "Ви реєструєтеся як власник сайту.",
+     "new-password": "Новий пароль",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Повторіть новий пароль",
+     "sign-in-tip": "Вже маєте обліковий запис?",
+     "sign-up-tip": "Ще не маєте облікового запису?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "За зростанням",
+     "direction-desc": "За спаданням",
+     "display-time": "Час відображення",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "єКод",
+       "has-link": "єПосилання",
+diff --git a/web/src/locales/vi.json b/web/src/locales/vi.json
+index be0cff9..0cbd7f4 100644
+--- a/web/src/locales/vi.json
++++ b/web/src/locales/vi.json
+@@ -10,6 +10,7 @@
+     "create-your-account": "Tạo tài khoản của bạn",
+     "host-tip": "Bạn đang đăng ký với tư cách Quản trị viên Trang.",
+     "new-password": "Mật khẩu mới",
++    "protected-memo-notice": "This memo is not public. Sign in to continue.",
+     "repeat-new-password": "Nhập lại mật khẩu mới",
+     "sign-in-tip": "Đã có tài khoản?",
+     "sign-up-tip": "Chưa có tài khoản?"
+@@ -155,6 +156,7 @@
+     "direction-asc": "Tăng dần",
+     "direction-desc": "Giảm dần",
+     "display-time": "Thời gian hiển thị",
++    "failed-to-load": "Failed to load memo.",
+     "filters": {
+       "has-code": "cóMã",
+       "has-link": "cóLiênKết",

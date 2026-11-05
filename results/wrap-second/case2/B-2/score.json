@@ -1,0 +1,49 @@
+{
+  "case": "case2",
+  "arm": "B",
+  "rep": 2,
+  "test_passed": true,
+  "cost_usd": 0.2707481,
+  "turns": 17,
+  "input": 28,
+  "cache_write": 42525,
+  "cache_read": 424056,
+  "output": 6036,
+  "first_cache_read": 10779,
+  "headroom": {
+    "requests_with_messages": 13,
+    "tokens_original": 288295,
+    "tokens_optimized": 281519
+  },
+  "mcp": {
+    "headroom": "connected",
+    "serena": "connected"
+  },
+  "tools": {
+    "Grep": 5,
+    "Read": 7,
+    "Bash": 4
+  },
+  "comparison": {
+    "shared": [
+      "server/api/v1/sse_service_test.go",
+      "server/api/v1/test/memo_service_test.go",
+      "store/db/mysql/memo_delete_policy.go",
+      "store/db/postgres/memo_delete_policy.go",
+      "store/db/sqlite/memo_delete_policy.go",
+      "store/memo_delete_policy.go",
+      "store/test/memo_delete_policy_test.go"
+    ],
+    "missing": [
+      "proto/api/v1/memo_service.proto",
+      "proto/gen/api/v1/apiv1connect/memo_service.connect.go",
+      "proto/gen/api/v1/memo_service_grpc.pb.go",
+      "proto/gen/openapi.yaml",
+      "store/db/mysql/memo_attachment.go",
+      "store/db/postgres/memo_attachment.go",
+      "web/src/types/proto/api/v1/memo_service_pb.ts"
+    ],
+    "extra": [],
+    "merged_total": 14
+  }
+}

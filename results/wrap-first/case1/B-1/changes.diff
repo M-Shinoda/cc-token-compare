@@ -1,0 +1,195 @@
+diff --git a/web/src/components/AppSidebar/SpaceSwitcher.tsx b/web/src/components/AppSidebar/SpaceSwitcher.tsx
+index 35f42e8..15b8f90 100644
+--- a/web/src/components/AppSidebar/SpaceSwitcher.tsx
++++ b/web/src/components/AppSidebar/SpaceSwitcher.tsx
+@@ -153,6 +153,7 @@ function SpaceSwitcher({ className, size = "md" }: { className?: string; size?:
+         <PopoverContent
+           align="start"
+           side="bottom"
++          positionMethod="fixed"
+           sideOffset={4}
+           className="w-[min(15rem,calc(100vw-1rem))] max-h-[min(27rem,calc(100dvh-5rem))] overflow-y-auto p-0"
+           style={menuWidth ? { width: `${menuWidth}px` } : undefined}
+@@ -238,7 +239,11 @@ function SpaceSwitcher({ className, size = "md" }: { className?: string; size?:
+                       )}
+                       <span className="min-w-0 flex-1 truncate text-start">{selectedSpaceName ? spaceLabel : allSpacesLabel}</span>
+                     </SelectTrigger>
+-                    <SelectContent className="max-h-64 w-(--anchor-width) min-w-0 max-w-[calc(100vw-2rem)]" align="start">
++                    <SelectContent
++                      className="max-h-64 w-(--anchor-width) min-w-0 max-w-[calc(100vw-2rem)]"
++                      align="start"
++                      positionMethod="fixed"
++                    >
+                       <SelectItem value="all">
+                         <span className="flex items-center gap-2">
+                           <AstroidIcon className="size-4" />
+diff --git a/web/src/components/UserMenu.tsx b/web/src/components/UserMenu.tsx
+index aa58230..73fac29 100644
+--- a/web/src/components/UserMenu.tsx
++++ b/web/src/components/UserMenu.tsx
+@@ -68,6 +68,7 @@ const PreferenceSubmenu = ({ icon: Icon, label, value, options, onChange, classN
+       sideOffset={8}
+       alignOffset={-4}
+       collisionAvoidance={{ fallbackAxisSide: "end" }}
++      positionMethod="fixed"
+       size="sm"
+       className={className}
+     >
+diff --git a/web/src/components/ui/dropdown-menu.tsx b/web/src/components/ui/dropdown-menu.tsx
+index 77073ff..bf19ec6 100644
+--- a/web/src/components/ui/dropdown-menu.tsx
++++ b/web/src/components/ui/dropdown-menu.tsx
+@@ -20,12 +20,15 @@ const DropdownMenuTrigger = React.forwardRef<HTMLButtonElement, DropdownMenuPrim
+ DropdownMenuTrigger.displayName = "DropdownMenuTrigger";
+ 
+ type DropdownMenuContentProps = DropdownMenuPrimitive.Popup.Props &
+-  Pick<DropdownMenuPrimitive.Positioner.Props, "align" | "alignOffset" | "collisionAvoidance" | "side" | "sideOffset"> & {
++  Pick<
++    DropdownMenuPrimitive.Positioner.Props,
++    "align" | "alignOffset" | "collisionAvoidance" | "positionMethod" | "side" | "sideOffset"
++  > & {
+     size?: DropdownMenuSize;
+   };
+ 
+ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContentProps>(
+-  ({ className, align, alignOffset, collisionAvoidance, side, sideOffset = 4, size = "default", ...props }, ref) => {
++  ({ className, align, alignOffset, collisionAvoidance, positionMethod, side, sideOffset = 4, size = "default", ...props }, ref) => {
+     return (
+       <DropdownMenuSizeContext.Provider value={size}>
+         <DropdownMenuPrimitive.Portal>
+@@ -33,6 +36,7 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
+             align={align}
+             alignOffset={alignOffset}
+             collisionAvoidance={collisionAvoidance}
++            positionMethod={positionMethod}
+             side={side}
+             sideOffset={sideOffset}
+             className="isolate z-dropdown outline-none"
+diff --git a/web/src/components/ui/popover.tsx b/web/src/components/ui/popover.tsx
+index 42495ad..1c23f8d 100644
+--- a/web/src/components/ui/popover.tsx
++++ b/web/src/components/ui/popover.tsx
+@@ -14,14 +14,16 @@ PopoverTrigger.displayName = "PopoverTrigger";
+ 
+ const PopoverContent = React.forwardRef<
+   HTMLDivElement,
+-  PopoverPrimitive.Popup.Props & Pick<PopoverPrimitive.Positioner.Props, "anchor" | "align" | "alignOffset" | "side" | "sideOffset">
+->(({ className, anchor, align = "center", alignOffset, side, sideOffset = 4, ...props }, ref) => {
++  PopoverPrimitive.Popup.Props &
++    Pick<PopoverPrimitive.Positioner.Props, "anchor" | "align" | "alignOffset" | "positionMethod" | "side" | "sideOffset">
++>(({ className, anchor, align = "center", alignOffset, positionMethod, side, sideOffset = 4, ...props }, ref) => {
+   return (
+     <PopoverPrimitive.Portal>
+       <PopoverPrimitive.Positioner
+         anchor={anchor}
+         align={align}
+         alignOffset={alignOffset}
++        positionMethod={positionMethod}
+         side={side}
+         sideOffset={sideOffset}
+         className="isolate z-dropdown"
+diff --git a/web/src/components/ui/select.tsx b/web/src/components/ui/select.tsx
+index 4660ceb..36bc941 100644
+--- a/web/src/components/ui/select.tsx
++++ b/web/src/components/ui/select.tsx
+@@ -51,7 +51,7 @@ function SelectTrigger({
+ }
+ 
+ type SelectContentProps = SelectPrimitive.Popup.Props &
+-  Pick<SelectPrimitive.Positioner.Props, "align" | "alignItemWithTrigger" | "alignOffset" | "side" | "sideOffset">;
++  Pick<SelectPrimitive.Positioner.Props, "align" | "alignItemWithTrigger" | "alignOffset" | "positionMethod" | "side" | "sideOffset">;
+ 
+ function SelectContent({
+   className,
+@@ -59,6 +59,7 @@ function SelectContent({
+   align = "start",
+   alignItemWithTrigger = false,
+   alignOffset,
++  positionMethod,
+   side,
+   sideOffset = 4,
+   ...props
+@@ -69,6 +70,7 @@ function SelectContent({
+         align={align}
+         alignItemWithTrigger={alignItemWithTrigger}
+         alignOffset={alignOffset}
++        positionMethod={positionMethod}
+         side={side}
+         sideOffset={sideOffset}
+         className="isolate z-dropdown"
+diff --git a/web/tests/space-switcher.test.tsx b/web/tests/space-switcher.test.tsx
+index 5ea5073..d3ab77b 100644
+--- a/web/tests/space-switcher.test.tsx
++++ b/web/tests/space-switcher.test.tsx
+@@ -81,6 +81,13 @@ const renderAt = (path = "/", size: "md" | "header" = "md") => {
+ 
+ const openSwitcher = () => fireEvent.click(screen.getByRole("button", { name: /space.switch:/ }));
+ 
++// Base UI positions with `fixed` until its first measurement lands, so wait for the transform before asserting.
++const expectFixedPositioner = async (popup: Element | null) => {
++  const positioner = popup?.parentElement as HTMLElement;
++  await waitFor(() => expect(positioner.style.transform).not.toBe(""));
++  expect(positioner).toHaveStyle({ position: "fixed" });
++};
++
+ describe("SpaceSwitcher", () => {
+   beforeEach(() => {
+     state.currentUser = { name: "users/steven", username: "steven", displayName: "Steven", avatarUrl: "" };
+@@ -229,4 +236,17 @@ describe("SpaceSwitcher", () => {
+     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+     expect(screen.getByRole("button", { name: "Steven account" })).toBeInTheDocument();
+   });
++
++  it.each(["md", "header"] as const)("anchors the %s scope popup to the fixed sidebar", async (size) => {
++    renderAt("/", size);
++    openSwitcher();
++    await expectFixedPositioner(document.querySelector('[data-slot="popover-content"]'));
++  });
++
++  it("anchors the nested Space selector to the fixed sidebar", async () => {
++    renderAt();
++    openSwitcher();
++    fireEvent.click(screen.getByRole("combobox", { name: "space.switch" }));
++    await expectFixedPositioner(document.querySelector('[data-slot="select-content"]'));
++  });
+ });
+diff --git a/web/tests/user-menu-positioning.test.tsx b/web/tests/user-menu-positioning.test.tsx
+new file mode 100644
+index 0000000..194ea79
+--- /dev/null
++++ b/web/tests/user-menu-positioning.test.tsx
+@@ -0,0 +1,34 @@
++import { fireEvent, render, screen, waitFor } from "@testing-library/react";
++import { MemoryRouter } from "react-router-dom";
++import { describe, expect, it, vi } from "vitest";
++import UserMenu from "@/components/UserMenu";
++
++vi.mock("@/hooks/useCurrentUser", () => ({ default: () => undefined }));
++vi.mock("@/hooks/useLiveMemoRefresh", () => ({ useSSEConnectionStatus: () => "connected" }));
++vi.mock("@/hooks/useUserQueries", () => ({
++  useNotifications: () => ({ data: [] }),
++  useUpdateUserGeneralSetting: () => ({ mutate: vi.fn() }),
++}));
++vi.mock("@/contexts/AppSidebarContext", () => ({ useAppSidebar: () => ({ setMobileOpen: vi.fn() }) }));
++vi.mock("@/contexts/AuthContext", () => ({
++  useAuth: () => ({ userGeneralSetting: undefined, refetchSettings: vi.fn(), logout: vi.fn() }),
++}));
++vi.mock("@/utils/i18n", async (importOriginal) => ({
++  ...(await importOriginal<typeof import("@/utils/i18n")>()),
++  useTranslate: () => (key: string) => key,
++}));
++
++describe("UserMenu preference submenus", () => {
++  it.each(["setting.preference.theme", "common.language"])("anchors the %s submenu to the fixed sidebar", async (label) => {
++    render(
++      <MemoryRouter>
++        <UserMenu onClose={vi.fn()} />
++      </MemoryRouter>,
++    );
++    fireEvent.click(screen.getByRole("button", { name: new RegExp(label) }));
++    await waitFor(() => expect(document.querySelector('[data-slot="dropdown-menu-content"]')).toBeInTheDocument());
++    const positioner = document.querySelector('[data-slot="dropdown-menu-content"]')?.parentElement as HTMLElement;
++    await waitFor(() => expect(positioner.style.transform).not.toBe(""));
++    expect(positioner).toHaveStyle({ position: "fixed" });
++  });
++});

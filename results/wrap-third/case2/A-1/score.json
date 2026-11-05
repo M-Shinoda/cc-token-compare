@@ -1,0 +1,46 @@
+{
+  "case": "case2",
+  "arm": "A",
+  "rep": 1,
+  "test_passed": true,
+  "cost_usd": 0.3043038,
+  "turns": 24,
+  "input": 1491,
+  "cache_write": 40984,
+  "cache_read": 692755,
+  "output": 7108,
+  "first_cache_read": 11122,
+  "headroom": null,
+  "mcp": null,
+  "tools": {
+    "Grep": 4,
+    "Read": 7,
+    "Bash": 12
+  },
+  "comparison": {
+    "shared": [
+      "server/api/v1/sse_service_test.go",
+      "server/api/v1/test/memo_service_test.go",
+      "store/db/mysql/memo_delete_policy.go",
+      "store/db/postgres/memo_delete_policy.go",
+      "store/db/sqlite/memo_delete_policy.go",
+      "store/memo_delete_policy.go",
+      "store/test/memo_delete_policy_test.go"
+    ],
+    "missing": [
+      "proto/api/v1/memo_service.proto",
+      "proto/gen/api/v1/apiv1connect/memo_service.connect.go",
+      "proto/gen/api/v1/memo_service_grpc.pb.go",
+      "proto/gen/openapi.yaml",
+      "store/db/mysql/memo_attachment.go",
+      "store/db/postgres/memo_attachment.go",
+      "web/src/types/proto/api/v1/memo_service_pb.ts"
+    ],
+    "extra": [
+      "store/db/mysql/memo_delete_comments.go",
+      "store/db/postgres/memo_delete_comments.go",
+      "store/db/sqlite/memo_delete_comments.go"
+    ],
+    "merged_total": 14
+  }
+}

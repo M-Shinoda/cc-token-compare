@@ -1,0 +1,712 @@
+diff --git a/web/src/locales/ar.json b/web/src/locales/ar.json
+index eb3b902..ad6f6e0 100644
+--- a/web/src/locales/ar.json
++++ b/web/src/locales/ar.json
+@@ -12,7 +12,8 @@
+     "new-password": "كلمة المرور الجديدة",
+     "repeat-new-password": "أعد كلمة المرور الجديدة",
+     "sign-in-tip": "هل لديك حساب بالفعل؟",
+-    "sign-up-tip": "ليس لديك حساب بعد؟"
++    "sign-up-tip": "ليس لديك حساب بعد؟",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "حول",
+@@ -175,7 +176,8 @@
+       "private": "خاص",
+       "protected": "محمي",
+       "public": "عام"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "تمت الأرشفة بنجاح",
+diff --git a/web/src/locales/ca.json b/web/src/locales/ca.json
+index 383021e..1c852f7 100644
+--- a/web/src/locales/ca.json
++++ b/web/src/locales/ca.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nova contrasenya",
+     "repeat-new-password": "Repeteix la contrasenya",
+     "sign-in-tip": "Ja tens un compte?",
+-    "sign-up-tip": "Encara no tens un compte?"
++    "sign-up-tip": "Encara no tens un compte?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Quant a",
+@@ -175,7 +176,8 @@
+       "private": "Privat",
+       "protected": "Espai de treball",
+       "public": "Públic"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Arxivat correctament",
+diff --git a/web/src/locales/cs.json b/web/src/locales/cs.json
+index 8955aa1..2968bf8 100644
+--- a/web/src/locales/cs.json
++++ b/web/src/locales/cs.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nové heslo",
+     "repeat-new-password": "Zopakujte nové heslo",
+     "sign-in-tip": "Už máte účet?",
+-    "sign-up-tip": "Ještě nemáte účet?"
++    "sign-up-tip": "Ještě nemáte účet?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "O aplikaci",
+@@ -175,7 +176,8 @@
+       "private": "Soukromá",
+       "protected": "Chráněná",
+       "public": "Veřejná"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Úspěšně archivováno",
+diff --git a/web/src/locales/de.json b/web/src/locales/de.json
+index 1ec697b..9edf7af 100644
+--- a/web/src/locales/de.json
++++ b/web/src/locales/de.json
+@@ -12,7 +12,8 @@
+     "new-password": "Neues Passwort",
+     "repeat-new-password": "Neues Passwort wiederholen",
+     "sign-in-tip": "Bereits ein Benutzerkonto?",
+-    "sign-up-tip": "Noch kein Benutzerkonto?"
++    "sign-up-tip": "Noch kein Benutzerkonto?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Über",
+@@ -175,7 +176,8 @@
+       "private": "Privat",
+       "protected": "Geschützt",
+       "public": "Öffentlich"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Erfolgreich archiviert",
+diff --git a/web/src/locales/en-GB.json b/web/src/locales/en-GB.json
+index 3468b66..96cacb7 100644
+--- a/web/src/locales/en-GB.json
++++ b/web/src/locales/en-GB.json
+@@ -8,5 +8,11 @@
+         "title": "Customise Server"
+       }
+     }
++  },
++  "auth": {
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
++  },
++  "memo": {
++    "failed-to-load": "Failed to load memo"
+   }
+ }
+diff --git a/web/src/locales/es.json b/web/src/locales/es.json
+index 2e2ca4f..1c8f965 100644
+--- a/web/src/locales/es.json
++++ b/web/src/locales/es.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nueva contraseña",
+     "repeat-new-password": "Repite la nueva contraseña",
+     "sign-in-tip": "¿Ya tienes una cuenta?",
+-    "sign-up-tip": "¿Aún no tienes una cuenta?"
++    "sign-up-tip": "¿Aún no tienes una cuenta?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Acerca de",
+@@ -175,7 +176,8 @@
+       "private": "Privado",
+       "protected": "Protegido",
+       "public": "Público"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Archivado correctamente",
+diff --git a/web/src/locales/fa.json b/web/src/locales/fa.json
+index 4f5a7b4..a114e16 100644
+--- a/web/src/locales/fa.json
++++ b/web/src/locales/fa.json
+@@ -12,7 +12,8 @@
+     "new-password": "گذرواژه جدید",
+     "repeat-new-password": "گذرواژه جدید را تکرار کنید",
+     "sign-in-tip": "آیا حساب کاربری تعریف شده دارید؟",
+-    "sign-up-tip": "آیا حساب کاربری تعریف شده ندارید؟"
++    "sign-up-tip": "آیا حساب کاربری تعریف شده ندارید؟",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "درباره",
+@@ -175,7 +176,8 @@
+       "private": "خصوصی",
+       "protected": "فضای کار",
+       "public": "عمومی"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "با موفقیت آرشیو شد",
+diff --git a/web/src/locales/fr.json b/web/src/locales/fr.json
+index 4230496..e525d73 100644
+--- a/web/src/locales/fr.json
++++ b/web/src/locales/fr.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nouveau mot de passe",
+     "repeat-new-password": "Répétez le nouveau mot de passe",
+     "sign-in-tip": "Vous avez déjà un compte ?",
+-    "sign-up-tip": "Vous n'avez pas encore de compte ?"
++    "sign-up-tip": "Vous n'avez pas encore de compte ?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "À propos",
+@@ -175,7 +176,8 @@
+       "private": "Privé",
+       "protected": "Protégé",
+       "public": "Public"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Archivé avec succès",
+diff --git a/web/src/locales/gl.json b/web/src/locales/gl.json
+index ebdfc5c..f6f0aa5 100644
+--- a/web/src/locales/gl.json
++++ b/web/src/locales/gl.json
+@@ -12,7 +12,8 @@
+     "new-password": "Novo contrasinal",
+     "repeat-new-password": "Repite o novo contrasinal",
+     "sign-in-tip": "Xa tes unha conta?",
+-    "sign-up-tip": "Aínda non tes unha conta?"
++    "sign-up-tip": "Aínda non tes unha conta?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Sobre",
+@@ -175,7 +176,8 @@
+       "private": "Privada",
+       "protected": "Protexida",
+       "public": "Pública"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Arquivada correctamente",
+diff --git a/web/src/locales/hi.json b/web/src/locales/hi.json
+index 446b62e..359c21f 100644
+--- a/web/src/locales/hi.json
++++ b/web/src/locales/hi.json
+@@ -12,7 +12,8 @@
+     "new-password": "नया पासवर्ड",
+     "repeat-new-password": "नया पासवर्ड दोहराएं",
+     "sign-in-tip": "क्या आपके पास पहले से खाता है?",
+-    "sign-up-tip": "अभी तक खाता नहीं है?"
++    "sign-up-tip": "अभी तक खाता नहीं है?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "के बारे में",
+@@ -175,7 +176,8 @@
+       "private": "निजी",
+       "protected": "सदस्य",
+       "public": "सार्वजनिक"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "सफलतापूर्वक संग्रहीत किया गया",
+diff --git a/web/src/locales/hr.json b/web/src/locales/hr.json
+index 33a45a5..43ecbd8 100644
+--- a/web/src/locales/hr.json
++++ b/web/src/locales/hr.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nova lozinka",
+     "repeat-new-password": "Ponovi novu lozinku",
+     "sign-in-tip": "Račun već postoji?",
+-    "sign-up-tip": "Još nemaš račun?"
++    "sign-up-tip": "Još nemaš račun?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "O aplikaciji",
+@@ -175,7 +176,8 @@
+       "private": "Privatno",
+       "protected": "Za članove",
+       "public": "Javno"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Uspješno arhivirano",
+diff --git a/web/src/locales/hu.json b/web/src/locales/hu.json
+index 46393b3..43932ab 100644
+--- a/web/src/locales/hu.json
++++ b/web/src/locales/hu.json
+@@ -12,7 +12,8 @@
+     "new-password": "Új jelszó",
+     "repeat-new-password": "Jelszó ismét",
+     "sign-in-tip": "Már van fiókod?",
+-    "sign-up-tip": "Még nincs fiókod?"
++    "sign-up-tip": "Még nincs fiókod?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Névjegy",
+@@ -175,7 +176,8 @@
+       "private": "Privát",
+       "protected": "Munkatér",
+       "public": "Nyilvános"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Sikeres archiválás",
+diff --git a/web/src/locales/id.json b/web/src/locales/id.json
+index 7804bbf..9ee2eac 100644
+--- a/web/src/locales/id.json
++++ b/web/src/locales/id.json
+@@ -12,7 +12,8 @@
+     "new-password": "Kata sandi baru",
+     "repeat-new-password": "Ulangi kata sandi baru",
+     "sign-in-tip": "Sudah memiliki akun?",
+-    "sign-up-tip": "Belum memiliki akun?"
++    "sign-up-tip": "Belum memiliki akun?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Tentang",
+@@ -175,7 +176,8 @@
+       "private": "Pribadi",
+       "protected": "Terlindungi",
+       "public": "Publik"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Berhasil diarsipkan",
+diff --git a/web/src/locales/it.json b/web/src/locales/it.json
+index aaecaba..a27f337 100644
+--- a/web/src/locales/it.json
++++ b/web/src/locales/it.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nuova password",
+     "repeat-new-password": "Ripeti la nuova password",
+     "sign-in-tip": "Hai già un account?",
+-    "sign-up-tip": "Non hai ancora un account?"
++    "sign-up-tip": "Non hai ancora un account?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Informazioni",
+@@ -175,7 +176,8 @@
+       "private": "Privato",
+       "protected": "Protetto",
+       "public": "Pubblico"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Archiviato con successo",
+diff --git a/web/src/locales/ja.json b/web/src/locales/ja.json
+index 85e5ea1..0ca1c9a 100644
+--- a/web/src/locales/ja.json
++++ b/web/src/locales/ja.json
+@@ -12,7 +12,8 @@
+     "new-password": "新しいパスワード",
+     "repeat-new-password": "新しいパスワードを確認(繰り返し)",
+     "sign-in-tip": "すでにアカウントを持っていますか?",
+-    "sign-up-tip": "アカウントを持っていませんか?"
++    "sign-up-tip": "アカウントを持っていませんか?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Memos について",
+@@ -175,7 +176,8 @@
+       "private": "非公開",
+       "protected": "メンバーに表示",
+       "public": "公開メモ"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "アーカイブが完了しました",
+diff --git a/web/src/locales/ka-GE.json b/web/src/locales/ka-GE.json
+index 14951b9..fc1ae3e 100644
+--- a/web/src/locales/ka-GE.json
++++ b/web/src/locales/ka-GE.json
+@@ -12,7 +12,8 @@
+     "new-password": "ახალი პაროლი",
+     "repeat-new-password": "გაიმეორეთ ახალი პაროლი",
+     "sign-in-tip": "დაქვემდებარებული გაქვთ ანგარიში?",
+-    "sign-up-tip": "ჯერ არ გაქვთ ანგარიში?"
++    "sign-up-tip": "ჯერ არ გაქვთ ანგარიში?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "შესახებ",
+@@ -175,7 +176,8 @@
+       "private": "პირადი",
+       "protected": "სამუშაო სივრცე",
+       "public": "საჯარო"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "წარმატებით დაარქივდა",
+diff --git a/web/src/locales/ko.json b/web/src/locales/ko.json
+index c9723d5..72a56be 100644
+--- a/web/src/locales/ko.json
++++ b/web/src/locales/ko.json
+@@ -12,7 +12,8 @@
+     "new-password": "새 비밀번호",
+     "repeat-new-password": "새 비밀번호 재확인",
+     "sign-in-tip": "이미 계정이 있으신가요?",
+-    "sign-up-tip": "아직 계정이 없으신가요?"
++    "sign-up-tip": "아직 계정이 없으신가요?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "정보",
+@@ -175,7 +176,8 @@
+       "private": "나만 볼 수 있음",
+       "protected": "멤버 전용",
+       "public": "공개"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "성공적으로 보관되었습니다",
+diff --git a/web/src/locales/mr.json b/web/src/locales/mr.json
+index 49bad3e..be646e5 100644
+--- a/web/src/locales/mr.json
++++ b/web/src/locales/mr.json
+@@ -12,7 +12,8 @@
+     "new-password": "नवीन पासवर्ड",
+     "repeat-new-password": "नवीन पासवर्डची पुनरावृत्ती करा",
+     "sign-in-tip": "आधीपासूनच एक खाते आहे?",
+-    "sign-up-tip": "अजून खाते नाही?"
++    "sign-up-tip": "अजून खाते नाही?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "बद्दल",
+@@ -175,7 +176,8 @@
+       "private": "खाजगी",
+       "protected": "संरक्षित",
+       "public": "सार्वजनिक"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "यशस्वीरित्या संग्रहित केले",
+diff --git a/web/src/locales/nb.json b/web/src/locales/nb.json
+index c3fb086..6eef60c 100644
+--- a/web/src/locales/nb.json
++++ b/web/src/locales/nb.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nytt passord",
+     "repeat-new-password": "Gjenta det nye passordet",
+     "sign-in-tip": "Har du allerede en konto?",
+-    "sign-up-tip": "Har du ikke en konto enda?"
++    "sign-up-tip": "Har du ikke en konto enda?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Om",
+@@ -175,7 +176,8 @@
+       "private": "Privat",
+       "protected": "Beskyttet",
+       "public": "Offentlig"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Arkivering vellykket",
+diff --git a/web/src/locales/nl.json b/web/src/locales/nl.json
+index 26e9174..c450aa2 100644
+--- a/web/src/locales/nl.json
++++ b/web/src/locales/nl.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nieuw wachtwoord",
+     "repeat-new-password": "Nieuw wachtwoord herhalen",
+     "sign-in-tip": "Al een account?",
+-    "sign-up-tip": "Nog geen account?"
++    "sign-up-tip": "Nog geen account?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Over",
+@@ -175,7 +176,8 @@
+       "private": "Privé",
+       "protected": "Werkruimte",
+       "public": "Openbaar"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Succesvol gearchiveerd",
+diff --git a/web/src/locales/pl.json b/web/src/locales/pl.json
+index ab04ac2..33c0c63 100644
+--- a/web/src/locales/pl.json
++++ b/web/src/locales/pl.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nowe hasło",
+     "repeat-new-password": "Powtórz nowe hasło",
+     "sign-in-tip": "Masz już konto?",
+-    "sign-up-tip": "Nie masz jeszcze konta?"
++    "sign-up-tip": "Nie masz jeszcze konta?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "O nas",
+@@ -176,7 +177,8 @@
+       "private": "Prywatne",
+       "protected": "Przestrzeń robocza",
+       "public": "Publiczne"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Zarchiwizowano pomyślnie",
+diff --git a/web/src/locales/pt-BR.json b/web/src/locales/pt-BR.json
+index b576f04..d425628 100644
+--- a/web/src/locales/pt-BR.json
++++ b/web/src/locales/pt-BR.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nova senha",
+     "repeat-new-password": "Repita a nova senha",
+     "sign-in-tip": "Já tem uma conta?",
+-    "sign-up-tip": "Ainda não tem uma conta?"
++    "sign-up-tip": "Ainda não tem uma conta?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Sobre",
+@@ -175,7 +176,8 @@
+       "private": "Privado",
+       "protected": "Protegido",
+       "public": "Público"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Arquivado com êxito",
+diff --git a/web/src/locales/pt-PT.json b/web/src/locales/pt-PT.json
+index bcf9738..8d0779b 100644
+--- a/web/src/locales/pt-PT.json
++++ b/web/src/locales/pt-PT.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nova palavra-passe",
+     "repeat-new-password": "Repita a nova palavra-passe",
+     "sign-in-tip": "Já tem uma conta?",
+-    "sign-up-tip": "Ainda não tem uma conta?"
++    "sign-up-tip": "Ainda não tem uma conta?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Sobre",
+@@ -175,7 +176,8 @@
+       "private": "Privado",
+       "protected": "Protegido",
+       "public": "Público"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Arquivado com sucesso",
+diff --git a/web/src/locales/ru.json b/web/src/locales/ru.json
+index 16f52d5..26c9b8a 100644
+--- a/web/src/locales/ru.json
++++ b/web/src/locales/ru.json
+@@ -12,7 +12,8 @@
+     "new-password": "Новый пароль",
+     "repeat-new-password": "Повторить новый пароль",
+     "sign-in-tip": "У вас уже есть учетная запись?",
+-    "sign-up-tip": "У вас еще нет учетной записи?"
++    "sign-up-tip": "У вас еще нет учетной записи?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "О Memos",
+@@ -175,7 +176,8 @@
+       "private": "Видно только вам",
+       "protected": "Видно только авторизованным пользователям",
+       "public": "Публичная"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Перемещено в архив",
+diff --git a/web/src/locales/sl.json b/web/src/locales/sl.json
+index 7a56b87..370a5b5 100644
+--- a/web/src/locales/sl.json
++++ b/web/src/locales/sl.json
+@@ -12,7 +12,8 @@
+     "new-password": "Novo geslo",
+     "repeat-new-password": "Ponovi novo geslo",
+     "sign-in-tip": "Že imaš račun?",
+-    "sign-up-tip": "Še nimaš računa?"
++    "sign-up-tip": "Še nimaš računa?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "O programu",
+@@ -176,7 +177,8 @@
+       "private": "Zasebno",
+       "protected": "Za uporabnike",
+       "public": "Javno"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Uspešno arhivirano",
+diff --git a/web/src/locales/sv.json b/web/src/locales/sv.json
+index b618f45..1273e46 100644
+--- a/web/src/locales/sv.json
++++ b/web/src/locales/sv.json
+@@ -12,7 +12,8 @@
+     "new-password": "Nytt lösenord",
+     "repeat-new-password": "Upprepa det nya lösenordet",
+     "sign-in-tip": "Har du redan ett konto?",
+-    "sign-up-tip": "Har du inget konto än?"
++    "sign-up-tip": "Har du inget konto än?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Om",
+@@ -175,7 +176,8 @@
+       "private": "Privat",
+       "protected": "Skyddad",
+       "public": "Offentlig"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Arkiverad framgångsrikt",
+diff --git a/web/src/locales/th.json b/web/src/locales/th.json
+index 0b5bcc3..0684caa 100644
+--- a/web/src/locales/th.json
++++ b/web/src/locales/th.json
+@@ -12,7 +12,8 @@
+     "new-password": "รหัสผ่านใหม่",
+     "repeat-new-password": "รหัสผ่านใหม่อีกครั้ง",
+     "sign-in-tip": "มีบัญชีอยู่แล้ว?",
+-    "sign-up-tip": "ยังไม่มีบัญชี?"
++    "sign-up-tip": "ยังไม่มีบัญชี?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "เกี่ยวกับ",
+@@ -175,7 +176,8 @@
+       "private": "ส่วนตัว",
+       "protected": "พื้นที่ทำงาน",
+       "public": "สาธารณะ"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "เก็บถาวรเรียบร้อยแล้ว",
+diff --git a/web/src/locales/tr.json b/web/src/locales/tr.json
+index 98aafcd..e68329a 100644
+--- a/web/src/locales/tr.json
++++ b/web/src/locales/tr.json
+@@ -12,7 +12,8 @@
+     "new-password": "Yeni şifre",
+     "repeat-new-password": "Yeni şifreyi tekrar girin",
+     "sign-in-tip": "Zaten hesabınız var mı?",
+-    "sign-up-tip": "Henüz hesabınız yok mu?"
++    "sign-up-tip": "Henüz hesabınız yok mu?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Hakkında",
+@@ -175,7 +176,8 @@
+       "private": "Özel",
+       "protected": "Çalışma Alanı",
+       "public": "Herkese Açık"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Başarıyla arşivlendi",
+diff --git a/web/src/locales/uk.json b/web/src/locales/uk.json
+index c479c2b..8340347 100644
+--- a/web/src/locales/uk.json
++++ b/web/src/locales/uk.json
+@@ -12,7 +12,8 @@
+     "new-password": "Новий пароль",
+     "repeat-new-password": "Повторіть новий пароль",
+     "sign-in-tip": "Вже маєте обліковий запис?",
+-    "sign-up-tip": "Ще не маєте облікового запису?"
++    "sign-up-tip": "Ще не маєте облікового запису?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Про Memos",
+@@ -175,7 +176,8 @@
+       "private": "Приватні",
+       "protected": "Робоча область",
+       "public": "Публічні"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Архівовано успішно",
+diff --git a/web/src/locales/vi.json b/web/src/locales/vi.json
+index be0cff9..60634c3 100644
+--- a/web/src/locales/vi.json
++++ b/web/src/locales/vi.json
+@@ -12,7 +12,8 @@
+     "new-password": "Mật khẩu mới",
+     "repeat-new-password": "Nhập lại mật khẩu mới",
+     "sign-in-tip": "Đã có tài khoản?",
+-    "sign-up-tip": "Chưa có tài khoản?"
++    "sign-up-tip": "Chưa có tài khoản?",
++    "protected-memo-notice": "This memo is protected. Please sign in to view it."
+   },
+   "common": {
+     "about": "Giới thiệu",
+@@ -175,7 +176,8 @@
+       "private": "Riêng tư",
+       "protected": "Không gian làm việc",
+       "public": "Công khai"
+-    }
++    },
++    "failed-to-load": "Failed to load memo"
+   },
+   "message": {
+     "archived-successfully": "Lưu trữ thành công",

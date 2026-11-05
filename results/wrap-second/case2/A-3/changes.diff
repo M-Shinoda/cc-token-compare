@@ -1,0 +1,248 @@
+diff --git a/server/api/v1/test/memo_service_test.go b/server/api/v1/test/memo_service_test.go
+index 4ff60b6..053b7e3 100644
+--- a/server/api/v1/test/memo_service_test.go
++++ b/server/api/v1/test/memo_service_test.go
+@@ -1263,7 +1263,7 @@ func TestMemoCommentDoesNotFollowParentVisibilityChanges(t *testing.T) {
+ 	require.Empty(t, comments.Memos, "context visibility must not expand a private comment")
+ }
+ 
+-func TestGlobalFeedExcludesCommentsUntilContextIsDeleted(t *testing.T) {
++func TestDeletingContextMemoDeletesComments(t *testing.T) {
+ 	ctx := context.Background()
+ 	ts := NewTestService(t)
+ 	defer ts.Cleanup()
+@@ -1287,14 +1287,12 @@ func TestGlobalFeedExcludesCommentsUntilContextIsDeleted(t *testing.T) {
+ 
+ 	_, err = ts.Service.DeleteMemo(ownerCtx, &apiv1.DeleteMemoRequest{Name: contextMemo.Name})
+ 	require.NoError(t, err)
+-	survivor, err := ts.Service.GetMemo(ownerCtx, &apiv1.GetMemoRequest{Name: comment.Name})
+-	require.NoError(t, err)
+-	require.Empty(t, survivor.GetParent())
++	_, err = ts.Service.GetMemo(ownerCtx, &apiv1.GetMemoRequest{Name: comment.Name})
++	require.Equal(t, codes.NotFound, status.Code(err), "comments are deleted with their context memo")
+ 
+ 	feed, err = ts.Service.ListMemos(ownerCtx, &apiv1.ListMemosRequest{PageSize: 20})
+ 	require.NoError(t, err)
+-	require.Len(t, feed.Memos, 1)
+-	require.Equal(t, comment.Name, feed.Memos[0].Name)
++	require.Empty(t, feed.Memos)
+ }
+ 
+ // TestCreateMemoWithCustomTimestamps tests that custom timestamps can be set when creating memos and comments.
+diff --git a/store/db/mysql/space_delete.go b/store/db/mysql/space_delete.go
+index 2c6232a..0fd5e4d 100644
+--- a/store/db/mysql/space_delete.go
++++ b/store/db/mysql/space_delete.go
+@@ -92,6 +92,10 @@ func listMySQLSpaceDeleteMemoIDs(ctx context.Context, tx *sql.Tx, spaceID int32)
+ }
+ 
+ func deleteMySQLMemoSetTx(ctx context.Context, tx *sql.Tx, memoIDs []int32) ([]*store.Attachment, error) {
++	memoIDs, err := expandMySQLMemoSetWithComments(ctx, tx, memoIDs)
++	if err != nil {
++		return nil, errors.Wrap(err, "failed to collect memo comments")
++	}
+ 	attachments, err := listMySQLMemoSetAttachments(ctx, tx, memoIDs)
+ 	if err != nil {
+ 		return nil, errors.Wrap(err, "failed to collect memo attachments")
+@@ -136,3 +140,46 @@ func deleteMySQLMemoSetShares(ctx context.Context, tx *sql.Tx, memoIDs []int32)
+ 	}
+ 	return nil
+ }
++
++// expandMySQLMemoSetWithComments returns memoIDs plus every memo that is a
++// direct or nested comment of them, so deleting a memo also deletes its comment thread.
++func expandMySQLMemoSetWithComments(ctx context.Context, tx *sql.Tx, memoIDs []int32) ([]int32, error) {
++	seen := make(map[int32]struct{}, len(memoIDs))
++	result := make([]int32, 0, len(memoIDs))
++	for _, id := range memoIDs {
++		if _, ok := seen[id]; !ok {
++			seen[id] = struct{}{}
++			result = append(result, id)
++		}
++	}
++	frontier := result
++	for len(frontier) > 0 {
++		next := make([]int32, 0)
++		for _, batch := range deleteUserBatches(frontier, deleteUserBatchSize) {
++			clause, args := deleteUserInClause(1, batch)
++			rows, err := tx.QueryContext(ctx, "SELECT memo_id FROM memo_relation WHERE type = 'COMMENT' AND related_memo_id IN "+clause, args...)
++			if err != nil {
++				return nil, err
++			}
++			for rows.Next() {
++				var id int32
++				if err := rows.Scan(&id); err != nil {
++					_ = rows.Close()
++					return nil, err
++				}
++				if _, ok := seen[id]; !ok {
++					seen[id] = struct{}{}
++					next = append(next, id)
++					result = append(result, id)
++				}
++			}
++			if err := rows.Err(); err != nil {
++				_ = rows.Close()
++				return nil, err
++			}
++			_ = rows.Close()
++		}
++		frontier = next
++	}
++	return result, nil
++}
+diff --git a/store/db/postgres/space_delete.go b/store/db/postgres/space_delete.go
+index 5b898d9..2aeb4f8 100644
+--- a/store/db/postgres/space_delete.go
++++ b/store/db/postgres/space_delete.go
+@@ -93,6 +93,10 @@ func listPostgresSpaceDeleteMemoIDs(ctx context.Context, tx *sql.Tx, spaceID int
+ }
+ 
+ func deletePostgresMemoSetTx(ctx context.Context, tx *sql.Tx, memoIDs []int32) ([]*store.Attachment, error) {
++	memoIDs, err := expandPostgresMemoSetWithComments(ctx, tx, memoIDs)
++	if err != nil {
++		return nil, errors.Wrap(err, "failed to collect memo comments")
++	}
+ 	attachments, err := listPostgresMemoSetAttachments(ctx, tx, memoIDs)
+ 	if err != nil {
+ 		return nil, errors.Wrap(err, "failed to collect memo attachments")
+@@ -137,3 +141,46 @@ func deletePostgresMemoSetShares(ctx context.Context, tx *sql.Tx, memoIDs []int3
+ 	}
+ 	return nil
+ }
++
++// expandPostgresMemoSetWithComments returns memoIDs plus every memo that is a
++// direct or nested comment of them, so deleting a memo also deletes its comment thread.
++func expandPostgresMemoSetWithComments(ctx context.Context, tx *sql.Tx, memoIDs []int32) ([]int32, error) {
++	seen := make(map[int32]struct{}, len(memoIDs))
++	result := make([]int32, 0, len(memoIDs))
++	for _, id := range memoIDs {
++		if _, ok := seen[id]; !ok {
++			seen[id] = struct{}{}
++			result = append(result, id)
++		}
++	}
++	frontier := result
++	for len(frontier) > 0 {
++		next := make([]int32, 0)
++		for _, batch := range deleteUserBatches(frontier, deleteUserBatchSize) {
++			clause, args := deleteUserInClause(1, batch)
++			rows, err := tx.QueryContext(ctx, "SELECT memo_id FROM memo_relation WHERE type = 'COMMENT' AND related_memo_id IN "+clause, args...)
++			if err != nil {
++				return nil, err
++			}
++			for rows.Next() {
++				var id int32
++				if err := rows.Scan(&id); err != nil {
++					_ = rows.Close()
++					return nil, err
++				}
++				if _, ok := seen[id]; !ok {
++					seen[id] = struct{}{}
++					next = append(next, id)
++					result = append(result, id)
++				}
++			}
++			if err := rows.Err(); err != nil {
++				_ = rows.Close()
++				return nil, err
++			}
++			_ = rows.Close()
++		}
++		frontier = next
++	}
++	return result, nil
++}
+diff --git a/store/db/sqlite/space_delete.go b/store/db/sqlite/space_delete.go
+index d21141f..3471893 100644
+--- a/store/db/sqlite/space_delete.go
++++ b/store/db/sqlite/space_delete.go
+@@ -92,6 +92,10 @@ func listSQLiteSpaceDeleteMemoIDs(ctx context.Context, tx dbExecutor, spaceID in
+ }
+ 
+ func deleteSQLiteMemoSetTx(ctx context.Context, tx dbExecutor, memoIDs []int32) ([]*store.Attachment, error) {
++	memoIDs, err := expandSQLiteMemoSetWithComments(ctx, tx, memoIDs)
++	if err != nil {
++		return nil, errors.Wrap(err, "failed to collect memo comments")
++	}
+ 	attachments, err := listSQLiteMemoSetAttachments(ctx, tx, memoIDs)
+ 	if err != nil {
+ 		return nil, errors.Wrap(err, "failed to collect memo attachments")
+@@ -136,3 +140,46 @@ func deleteSQLiteMemoSetShares(ctx context.Context, tx dbExecutor, memoIDs []int
+ 	}
+ 	return nil
+ }
++
++// expandSQLiteMemoSetWithComments returns memoIDs plus every memo that is a
++// direct or nested comment of them, so deleting a memo also deletes its comment thread.
++func expandSQLiteMemoSetWithComments(ctx context.Context, tx dbExecutor, memoIDs []int32) ([]int32, error) {
++	seen := make(map[int32]struct{}, len(memoIDs))
++	result := make([]int32, 0, len(memoIDs))
++	for _, id := range memoIDs {
++		if _, ok := seen[id]; !ok {
++			seen[id] = struct{}{}
++			result = append(result, id)
++		}
++	}
++	frontier := result
++	for len(frontier) > 0 {
++		next := make([]int32, 0)
++		for _, batch := range deleteUserBatches(frontier, deleteUserBatchSize) {
++			clause, args := deleteUserInClause(1, batch)
++			rows, err := tx.QueryContext(ctx, "SELECT memo_id FROM memo_relation WHERE type = 'COMMENT' AND related_memo_id IN "+clause, args...)
++			if err != nil {
++				return nil, err
++			}
++			for rows.Next() {
++				var id int32
++				if err := rows.Scan(&id); err != nil {
++					_ = rows.Close()
++					return nil, err
++				}
++				if _, ok := seen[id]; !ok {
++					seen[id] = struct{}{}
++					next = append(next, id)
++					result = append(result, id)
++				}
++			}
++			if err := rows.Err(); err != nil {
++				_ = rows.Close()
++				return nil, err
++			}
++			_ = rows.Close()
++		}
++		frontier = next
++	}
++	return result, nil
++}
+diff --git a/store/test/memo_delete_policy_test.go b/store/test/memo_delete_policy_test.go
+index b0724f1..90dc859 100644
+--- a/store/test/memo_delete_policy_test.go
++++ b/store/test/memo_delete_policy_test.go
+@@ -59,11 +59,12 @@ func TestDeleteMemoWithPolicyDeletesOnlyTargetAndIncidentResources(t *testing.T)
+ 	deleted, err := ts.GetMemo(ctx, &store.FindMemo{ID: &comment.ID})
+ 	require.NoError(t, err)
+ 	require.Nil(t, deleted)
+-	for _, survivorID := range []int32{contextMemo.ID, reply.ID} {
+-		survivor, err := ts.GetMemo(ctx, &store.FindMemo{ID: &survivorID})
+-		require.NoError(t, err)
+-		require.NotNil(t, survivor)
+-	}
++	survivor, err := ts.GetMemo(ctx, &store.FindMemo{ID: &contextMemo.ID})
++	require.NoError(t, err)
++	require.NotNil(t, survivor)
++	deletedReply, err := ts.GetMemo(ctx, &store.FindMemo{ID: &reply.ID})
++	require.NoError(t, err)
++	require.Nil(t, deletedReply, "replies nested under a deleted comment are deleted with it")
+ 
+ 	gotAttachment, err := ts.GetAttachment(ctx, &store.FindAttachment{ID: &attachment.ID})
+ 	require.NoError(t, err)
+@@ -83,7 +84,7 @@ func TestDeleteMemoWithPolicyDeletesOnlyTargetAndIncidentResources(t *testing.T)
+ 	require.Empty(t, incident)
+ 	replyRelations, err := ts.ListMemoRelations(ctx, &store.FindMemoRelation{MemoID: &reply.ID})
+ 	require.NoError(t, err)
+-	require.Empty(t, replyRelations, "the surviving reply loses only its deleted context relation")
++	require.Empty(t, replyRelations)
+ }
+ 
+ func TestMemoDeleteActorCanReadAudienceMatrix(t *testing.T) {

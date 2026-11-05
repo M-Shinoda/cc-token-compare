@@ -1,0 +1,31 @@
+{
+  "case": "case1",
+  "arm": "B",
+  "rep": 1,
+  "cost_usd": 0.33396109999999996,
+  "turns": 24,
+  "input": 38,
+  "cache_write": 49093,
+  "cache_read": 747366,
+  "output": 6615,
+  "first_cache_read": 11063,
+  "headroom": {
+    "requests_with_messages": 18,
+    "tokens_original": 501983,
+    "tokens_optimized": 479644
+  },
+  "comparison": {
+    "shared": [
+      "web/src/components/AppSidebar/SpaceSwitcher.tsx",
+      "web/src/components/UserMenu.tsx",
+      "web/src/components/ui/dropdown-menu.tsx",
+      "web/src/components/ui/popover.tsx",
+      "web/src/components/ui/select.tsx",
+      "web/tests/space-switcher.test.tsx",
+      "web/tests/user-menu.test.tsx"
+    ],
+    "missing": [],
+    "extra": [],
+    "merged_total": 7
+  }
+}
