@@ -1,0 +1,279 @@
+diff --git a/server/api/v1/sse_service_test.go b/server/api/v1/sse_service_test.go
+index 454c3e6..f8df483 100644
+--- a/server/api/v1/sse_service_test.go
++++ b/server/api/v1/sse_service_test.go
+@@ -556,7 +556,7 @@ func TestDeleteMemoReactionPublishesMemoChanged(t *testing.T) {
+ 	mustNotReceive(t, client.events, 100*time.Millisecond)
+ }
+ 
+-func TestDeleteMemo_DeletesOnlyRequestedMemo(t *testing.T) {
++func TestDeleteMemo_DeletesNestedReplies(t *testing.T) {
+ 	ctx := context.Background()
+ 	svc := newIntegrationService(t)
+ 	rootAuthor, err := svc.Store.CreateUser(ctx, &store.User{
+@@ -602,7 +602,7 @@ func TestDeleteMemo_DeletesOnlyRequestedMemo(t *testing.T) {
+ 	require.NoError(t, err)
+ 	storedReply, err := svc.Store.GetMemo(ctx, &store.FindMemo{UID: &replyUID})
+ 	require.NoError(t, err)
+-	require.NotNil(t, storedReply, "deleting a COMMENT endpoint must not cascade to the replying memo")
++	require.Nil(t, storedReply, "deleting a comment must delete replies nested under it")
+ 	rootUID, err := ExtractMemoUIDFromName(root.Name)
+ 	require.NoError(t, err)
+ 	storedRoot, err := svc.Store.GetMemo(ctx, &store.FindMemo{UID: &rootUID})
+diff --git a/server/api/v1/test/memo_service_test.go b/server/api/v1/test/memo_service_test.go
+index 4ff60b6..d9c5075 100644
+--- a/server/api/v1/test/memo_service_test.go
++++ b/server/api/v1/test/memo_service_test.go
+@@ -1263,7 +1263,7 @@ func TestMemoCommentDoesNotFollowParentVisibilityChanges(t *testing.T) {
+ 	require.Empty(t, comments.Memos, "context visibility must not expand a private comment")
+ }
+ 
+-func TestGlobalFeedExcludesCommentsUntilContextIsDeleted(t *testing.T) {
++func TestDeleteMemoDeletesNestedComments(t *testing.T) {
+ 	ctx := context.Background()
+ 	ts := NewTestService(t)
+ 	defer ts.Cleanup()
+@@ -1279,6 +1279,10 @@ func TestGlobalFeedExcludesCommentsUntilContextIsDeleted(t *testing.T) {
+ 		Name: contextMemo.Name, Comment: &apiv1.Memo{Content: "independent comment", Visibility: apiv1.Visibility_PUBLIC},
+ 	})
+ 	require.NoError(t, err)
++	reply, err := ts.Service.CreateMemoComment(ownerCtx, &apiv1.CreateMemoCommentRequest{
++		Name: comment.Name, Comment: &apiv1.Memo{Content: "nested reply", Visibility: apiv1.Visibility_PUBLIC},
++	})
++	require.NoError(t, err)
+ 
+ 	feed, err := ts.Service.ListMemos(ownerCtx, &apiv1.ListMemosRequest{PageSize: 20})
+ 	require.NoError(t, err)
+@@ -1287,14 +1291,14 @@ func TestGlobalFeedExcludesCommentsUntilContextIsDeleted(t *testing.T) {
+ 
+ 	_, err = ts.Service.DeleteMemo(ownerCtx, &apiv1.DeleteMemoRequest{Name: contextMemo.Name})
+ 	require.NoError(t, err)
+-	survivor, err := ts.Service.GetMemo(ownerCtx, &apiv1.GetMemoRequest{Name: comment.Name})
+-	require.NoError(t, err)
+-	require.Empty(t, survivor.GetParent())
++	_, err = ts.Service.GetMemo(ownerCtx, &apiv1.GetMemoRequest{Name: comment.Name})
++	require.Equal(t, codes.NotFound, status.Code(err))
++	_, err = ts.Service.GetMemo(ownerCtx, &apiv1.GetMemoRequest{Name: reply.Name})
++	require.Equal(t, codes.NotFound, status.Code(err))
+ 
+ 	feed, err = ts.Service.ListMemos(ownerCtx, &apiv1.ListMemosRequest{PageSize: 20})
+ 	require.NoError(t, err)
+-	require.Len(t, feed.Memos, 1)
+-	require.Equal(t, comment.Name, feed.Memos[0].Name)
++	require.Empty(t, feed.Memos, "comments must not be promoted to the timeline when their context is deleted")
+ }
+ 
+ // TestCreateMemoWithCustomTimestamps tests that custom timestamps can be set when creating memos and comments.
+diff --git a/store/db/mysql/memo_delete_policy.go b/store/db/mysql/memo_delete_policy.go
+index e6b6f8e..8c9827a 100644
+--- a/store/db/mysql/memo_delete_policy.go
++++ b/store/db/mysql/memo_delete_policy.go
+@@ -52,7 +52,11 @@ func (d *DB) DeleteMemoWithPolicy(ctx context.Context, delete *store.DeleteMemoW
+ 	}
+ 	actorCanRead := store.MemoDeleteActorCanRead(rowStatus, visibility, spaceID, spaceExists, actorMember || actor.Admin)
+ 
+-	attachments, err := deleteMySQLMemoSetTx(ctx, tx, []int32{delete.MemoID})
++	memoIDs, err := listMySQLMemoWithComments(ctx, tx, delete.MemoID)
++	if err != nil {
++		return nil, err
++	}
++	attachments, err := deleteMySQLMemoSetTx(ctx, tx, memoIDs)
+ 	if err != nil {
+ 		return nil, errors.Wrap(err, "failed to delete memo set")
+ 	}
+@@ -61,3 +65,26 @@ func (d *DB) DeleteMemoWithPolicy(ctx context.Context, delete *store.DeleteMemoW
+ 	}
+ 	return &store.DeleteMemoWithPolicyResult{ActorCanRead: actorCanRead, Attachments: attachments}, nil
+ }
++
++// listMySQLMemoWithComments returns the memo and every comment nested under it,
++// so deleting a memo never leaves orphaned comments behind.
++func listMySQLMemoWithComments(ctx context.Context, tx *sql.Tx, memoID int32) ([]int32, error) {
++	rows, err := tx.QueryContext(ctx, `WITH RECURSIVE thread(id) AS (
++		SELECT CAST(? AS SIGNED)
++		UNION
++		SELECT r.memo_id FROM memo_relation r JOIN thread t ON r.related_memo_id = t.id WHERE r.type = 'COMMENT'
++	) SELECT id FROM thread ORDER BY id`, memoID)
++	if err != nil {
++		return nil, errors.Wrap(err, "failed to list memo comments")
++	}
++	defer rows.Close()
++	ids := []int32{}
++	for rows.Next() {
++		var id int32
++		if err := rows.Scan(&id); err != nil {
++			return nil, errors.Wrap(err, "failed to scan memo comment")
++		}
++		ids = append(ids, id)
++	}
++	return ids, errors.Wrap(rows.Err(), "failed to iterate memo comments")
++}
+diff --git a/store/db/postgres/memo_delete_policy.go b/store/db/postgres/memo_delete_policy.go
+index cac8084..63df20a 100644
+--- a/store/db/postgres/memo_delete_policy.go
++++ b/store/db/postgres/memo_delete_policy.go
+@@ -45,7 +45,11 @@ func (d *DB) DeleteMemoWithPolicy(ctx context.Context, delete *store.DeleteMemoW
+ 	}
+ 	actorCanRead := store.MemoDeleteActorCanRead(rowStatus, visibility, memoSpaceID, spaceExists, actorMember || actor.Admin)
+ 
+-	attachments, err := deletePostgresMemoSetTx(ctx, tx, []int32{delete.MemoID})
++	memoIDs, err := listPostgresMemoWithComments(ctx, tx, delete.MemoID)
++	if err != nil {
++		return nil, err
++	}
++	attachments, err := deletePostgresMemoSetTx(ctx, tx, memoIDs)
+ 	if err != nil {
+ 		return nil, errors.Wrap(err, "failed to delete memo set")
+ 	}
+@@ -54,3 +58,26 @@ func (d *DB) DeleteMemoWithPolicy(ctx context.Context, delete *store.DeleteMemoW
+ 	}
+ 	return &store.DeleteMemoWithPolicyResult{ActorCanRead: actorCanRead, Attachments: attachments}, nil
+ }
++
++// listPostgresMemoWithComments returns the memo and every comment nested under it,
++// so deleting a memo never leaves orphaned comments behind.
++func listPostgresMemoWithComments(ctx context.Context, tx *sql.Tx, memoID int32) ([]int32, error) {
++	rows, err := tx.QueryContext(ctx, `WITH RECURSIVE thread(id) AS (
++		SELECT CAST($1 AS INTEGER)
++		UNION
++		SELECT r.memo_id FROM memo_relation r JOIN thread t ON r.related_memo_id = t.id WHERE r.type = 'COMMENT'
++	) SELECT id FROM thread ORDER BY id`, memoID)
++	if err != nil {
++		return nil, errors.Wrap(err, "failed to list memo comments")
++	}
++	defer rows.Close()
++	ids := []int32{}
++	for rows.Next() {
++		var id int32
++		if err := rows.Scan(&id); err != nil {
++			return nil, errors.Wrap(err, "failed to scan memo comment")
++		}
++		ids = append(ids, id)
++	}
++	return ids, errors.Wrap(rows.Err(), "failed to iterate memo comments")
++}
+diff --git a/store/db/sqlite/memo_delete_policy.go b/store/db/sqlite/memo_delete_policy.go
+index 0332fa7..dad9271 100644
+--- a/store/db/sqlite/memo_delete_policy.go
++++ b/store/db/sqlite/memo_delete_policy.go
+@@ -52,7 +52,11 @@ func (d *DB) DeleteMemoWithPolicy(ctx context.Context, delete *store.DeleteMemoW
+ 	}
+ 	actorCanRead := store.MemoDeleteActorCanRead(rowStatus, visibility, spaceID, spaceExists, actorMember || actor.Admin)
+ 
+-	attachments, err := deleteSQLiteMemoSetTx(ctx, tx, []int32{delete.MemoID})
++	memoIDs, err := listSQLiteMemoWithComments(ctx, tx, delete.MemoID)
++	if err != nil {
++		return nil, err
++	}
++	attachments, err := deleteSQLiteMemoSetTx(ctx, tx, memoIDs)
+ 	if err != nil {
+ 		return nil, errors.Wrap(err, "failed to delete memo set")
+ 	}
+@@ -61,3 +65,26 @@ func (d *DB) DeleteMemoWithPolicy(ctx context.Context, delete *store.DeleteMemoW
+ 	}
+ 	return &store.DeleteMemoWithPolicyResult{ActorCanRead: actorCanRead, Attachments: attachments}, nil
+ }
++
++// listSQLiteMemoWithComments returns the memo and every comment nested under it,
++// so deleting a memo never leaves orphaned comments behind.
++func listSQLiteMemoWithComments(ctx context.Context, tx *sql.Tx, memoID int32) ([]int32, error) {
++	rows, err := tx.QueryContext(ctx, `WITH RECURSIVE thread(id) AS (
++		SELECT ?
++		UNION
++		SELECT r.memo_id FROM memo_relation r JOIN thread t ON r.related_memo_id = t.id WHERE r.type = 'COMMENT'
++	) SELECT id FROM thread ORDER BY id`, memoID)
++	if err != nil {
++		return nil, errors.Wrap(err, "failed to list memo comments")
++	}
++	defer rows.Close()
++	ids := []int32{}
++	for rows.Next() {
++		var id int32
++		if err := rows.Scan(&id); err != nil {
++			return nil, errors.Wrap(err, "failed to scan memo comment")
++		}
++		ids = append(ids, id)
++	}
++	return ids, errors.Wrap(rows.Err(), "failed to iterate memo comments")
++}
+diff --git a/store/memo_delete_policy.go b/store/memo_delete_policy.go
+index d5632ca..0689bc1 100644
+--- a/store/memo_delete_policy.go
++++ b/store/memo_delete_policy.go
+@@ -7,8 +7,8 @@ import (
+ )
+ 
+ // DeleteMemoWithPolicy identifies one memo to delete atomically on behalf of
+-// its author or an instance administrator. Relations do not confer lifecycle
+-// authority, so no related memo is deleted.
++// its author or an instance administrator. Reference relations do not confer lifecycle
++// authority; only the memo's comment thread is deleted with it.
+ type DeleteMemoWithPolicy struct {
+ 	MemoID      int32
+ 	ActorUserID int32
+@@ -40,8 +40,8 @@ func MemoDeleteActorCanRead(rowStatus RowStatus, visibility Visibility, spaceID
+ 	}
+ }
+ 
+-// DeleteMemoWithPolicy atomically deletes exactly one memo, its owned database
+-// resources, and relations for which it is an endpoint.
++// DeleteMemoWithPolicy atomically deletes a memo, all comments nested under it, their owned database
++// resources, and relations for which they are an endpoint.
+ func (s *Store) DeleteMemoWithPolicy(ctx context.Context, delete *DeleteMemoWithPolicy) (*DeleteMemoWithPolicyResult, error) {
+ 	if delete == nil || delete.MemoID <= 0 || delete.ActorUserID <= 0 {
+ 		return nil, errors.New("memo deletion requires memo and actor")
+diff --git a/store/test/memo_delete_policy_test.go b/store/test/memo_delete_policy_test.go
+index b0724f1..bf88653 100644
+--- a/store/test/memo_delete_policy_test.go
++++ b/store/test/memo_delete_policy_test.go
+@@ -11,7 +11,7 @@ import (
+ 	"github.com/usememos/memos/store"
+ )
+ 
+-func TestDeleteMemoWithPolicyDeletesOnlyTargetAndIncidentResources(t *testing.T) {
++func TestDeleteMemoWithPolicyDeletesNestedCommentsAndIncidentResources(t *testing.T) {
+ 	ctx := context.Background()
+ 	ts := NewTestingStore(ctx, t)
+ 	defer ts.Close()
+@@ -59,11 +59,12 @@ func TestDeleteMemoWithPolicyDeletesOnlyTargetAndIncidentResources(t *testing.T)
+ 	deleted, err := ts.GetMemo(ctx, &store.FindMemo{ID: &comment.ID})
+ 	require.NoError(t, err)
+ 	require.Nil(t, deleted)
+-	for _, survivorID := range []int32{contextMemo.ID, reply.ID} {
+-		survivor, err := ts.GetMemo(ctx, &store.FindMemo{ID: &survivorID})
+-		require.NoError(t, err)
+-		require.NotNil(t, survivor)
+-	}
++	survivor, err := ts.GetMemo(ctx, &store.FindMemo{ID: &contextMemo.ID})
++	require.NoError(t, err)
++	require.NotNil(t, survivor)
++	deletedReply, err := ts.GetMemo(ctx, &store.FindMemo{ID: &reply.ID})
++	require.NoError(t, err)
++	require.Nil(t, deletedReply, "replies nested under a deleted comment are deleted too")
+ 
+ 	gotAttachment, err := ts.GetAttachment(ctx, &store.FindAttachment{ID: &attachment.ID})
+ 	require.NoError(t, err)
+@@ -83,7 +84,22 @@ func TestDeleteMemoWithPolicyDeletesOnlyTargetAndIncidentResources(t *testing.T)
+ 	require.Empty(t, incident)
+ 	replyRelations, err := ts.ListMemoRelations(ctx, &store.FindMemoRelation{MemoID: &reply.ID})
+ 	require.NoError(t, err)
+-	require.Empty(t, replyRelations, "the surviving reply loses only its deleted context relation")
++	require.Empty(t, replyRelations)
++
++	// Deleting a root memo removes its whole comment thread.
++	threadRoot, err := ts.CreateMemo(ctx, &store.Memo{UID: "delete-thread-root", CreatorID: contextAuthor.ID, Content: "root", Visibility: store.Public})
++	require.NoError(t, err)
++	child, err := ts.CreateMemoComment(ctx, &store.Memo{UID: "delete-thread-child", CreatorID: commentAuthor.ID, Content: "child", Visibility: store.Public}, threadRoot.ID, commentAuthor.ID)
++	require.NoError(t, err)
++	grandchild, err := ts.CreateMemoComment(ctx, &store.Memo{UID: "delete-thread-grandchild", CreatorID: replyAuthor.ID, Content: "grandchild", Visibility: store.Public}, child.ID, replyAuthor.ID)
++	require.NoError(t, err)
++	_, err = ts.DeleteMemoWithPolicy(ctx, &store.DeleteMemoWithPolicy{MemoID: threadRoot.ID, ActorUserID: contextAuthor.ID})
++	require.NoError(t, err)
++	for _, id := range []int32{threadRoot.ID, child.ID, grandchild.ID} {
++		got, err := ts.GetMemo(ctx, &store.FindMemo{ID: &id})
++		require.NoError(t, err)
++		require.Nil(t, got)
++	}
+ }
+ 
+ func TestMemoDeleteActorCanReadAudienceMatrix(t *testing.T) {

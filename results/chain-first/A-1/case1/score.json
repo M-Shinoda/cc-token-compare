@@ -1,0 +1,32 @@
+{
+  "case": "case1",
+  "order": 4,
+  "arm": "A",
+  "rep": 1,
+  "test_passed": true,
+  "cost_usd": 0.37831899999999974,
+  "input": 36,
+  "cache_write": 32656,
+  "cache_read": 1625830,
+  "output": 8504,
+  "turns": 18,
+  "compactions": 0,
+  "headroom": null,
+  "tools": {
+    "Bash": 17
+  },
+  "comparison": {
+    "shared": [
+      "web/src/components/AppSidebar/SpaceSwitcher.tsx",
+      "web/src/components/UserMenu.tsx",
+      "web/src/components/ui/dropdown-menu.tsx",
+      "web/src/components/ui/popover.tsx",
+      "web/src/components/ui/select.tsx",
+      "web/tests/space-switcher.test.tsx",
+      "web/tests/user-menu.test.tsx"
+    ],
+    "missing": [],
+    "extra": [],
+    "merged_total": 7
+  }
+}

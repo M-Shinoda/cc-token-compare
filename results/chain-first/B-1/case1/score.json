@@ -1,0 +1,40 @@
+{
+  "case": "case1",
+  "order": 4,
+  "arm": "B",
+  "rep": 1,
+  "test_passed": true,
+  "cost_usd": 0.33015320000000004,
+  "input": 26,
+  "cache_write": 36084,
+  "cache_read": 1115552,
+  "output": 7421,
+  "turns": 13,
+  "compactions": 0,
+  "headroom": {
+    "requests_with_messages": 13,
+    "tokens_original": 761742,
+    "tokens_optimized": 747750
+  },
+  "tools": {
+    "Bash": 12
+  },
+  "comparison": {
+    "shared": [
+      "web/src/components/AppSidebar/SpaceSwitcher.tsx",
+      "web/src/components/UserMenu.tsx",
+      "web/src/components/ui/dropdown-menu.tsx",
+      "web/src/components/ui/popover.tsx",
+      "web/src/components/ui/select.tsx"
+    ],
+    "missing": [
+      "web/tests/space-switcher.test.tsx",
+      "web/tests/user-menu.test.tsx"
+    ],
+    "extra": [
+      "web/tests/app-sidebar-logo.test.tsx",
+      "web/tests/user-menu-positioning.test.tsx"
+    ],
+    "merged_total": 7
+  }
+}

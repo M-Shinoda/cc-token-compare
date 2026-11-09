@@ -1,0 +1,25 @@
+{
+  "arm": "A",
+  "rep": 1,
+  "cases": [
+    "case3",
+    "case4",
+    "case2",
+    "case1"
+  ],
+  "cost_usd": 0.9381596999999998,
+  "input": 1449,
+  "cache_write": 91761,
+  "cache_read": 3364316,
+  "output": 23840,
+  "turns": 60,
+  "compactions": 0,
+  "tests_passed": 3,
+  "headroom": null,
+  "mcp": null,
+  "tools": {
+    "Grep": 2,
+    "Bash": 53,
+    "Monitor": 1
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "case": "case4",
+  "order": 2,
+  "arm": "A",
+  "rep": 1,
+  "test_passed": true,
+  "cost_usd": 0.160752,
+  "input": 26,
+  "cache_write": 18107,
+  "cache_read": 431220,
+  "output": 4515,
+  "turns": 13,
+  "compactions": 0,
+  "headroom": null,
+  "tools": {
+    "Bash": 12
+  },
+  "comparison": {
+    "shared": [
+      "web/package.json",
+      "web/pnpm-lock.yaml",
+      "web/src/utils/uuid.ts"
+    ],
+    "missing": [],
+    "extra": [
+      "web/src/utils/i18n.ts"
+    ],
+    "merged_total": 3
+  }
+}

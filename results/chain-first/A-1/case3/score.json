@@ -1,0 +1,57 @@
+{
+  "case": "case3",
+  "order": 1,
+  "arm": "A",
+  "rep": 1,
+  "test_passed": false,
+  "cost_usd": 0.08738610000000002,
+  "input": 1347,
+  "cache_write": 12451,
+  "cache_read": 143520,
+  "output": 2715,
+  "turns": 9,
+  "compactions": 0,
+  "headroom": null,
+  "tools": {
+    "Grep": 2,
+    "Bash": 6
+  },
+  "comparison": {
+    "shared": [
+      "web/src/locales/ar.json",
+      "web/src/locales/ca.json",
+      "web/src/locales/cs.json",
+      "web/src/locales/de.json",
+      "web/src/locales/es.json",
+      "web/src/locales/fa.json",
+      "web/src/locales/fr.json",
+      "web/src/locales/gl.json",
+      "web/src/locales/hi.json",
+      "web/src/locales/hr.json",
+      "web/src/locales/hu.json",
+      "web/src/locales/id.json",
+      "web/src/locales/it.json",
+      "web/src/locales/ja.json",
+      "web/src/locales/ka-GE.json",
+      "web/src/locales/ko.json",
+      "web/src/locales/mr.json",
+      "web/src/locales/nb.json",
+      "web/src/locales/nl.json",
+      "web/src/locales/pl.json",
+      "web/src/locales/pt-BR.json",
+      "web/src/locales/pt-PT.json",
+      "web/src/locales/ru.json",
+      "web/src/locales/sl.json",
+      "web/src/locales/sv.json",
+      "web/src/locales/th.json",
+      "web/src/locales/tr.json",
+      "web/src/locales/uk.json",
+      "web/src/locales/vi.json"
+    ],
+    "missing": [
+      "web/src/locales/en-GB.json"
+    ],
+    "extra": [],
+    "merged_total": 30
+  }
+}

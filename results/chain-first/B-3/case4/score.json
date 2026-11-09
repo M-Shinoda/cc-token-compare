@@ -1,0 +1,34 @@
+{
+  "case": "case4",
+  "order": 2,
+  "arm": "B",
+  "rep": 3,
+  "test_passed": true,
+  "cost_usd": 0.15017930000000002,
+  "input": 28,
+  "cache_write": 14911,
+  "cache_read": 425293,
+  "output": 4795,
+  "turns": 14,
+  "compactions": 0,
+  "headroom": {
+    "requests_with_messages": 14,
+    "tokens_original": 310769,
+    "tokens_optimized": 297944
+  },
+  "tools": {
+    "Bash": 13
+  },
+  "comparison": {
+    "shared": [
+      "web/package.json",
+      "web/pnpm-lock.yaml",
+      "web/src/utils/uuid.ts"
+    ],
+    "missing": [],
+    "extra": [
+      "web/src/utils/i18n.ts"
+    ],
+    "merged_total": 3
+  }
+}

@@ -1,0 +1,200 @@
+diff --git a/web/src/components/AppSidebar/SpaceSwitcher.tsx b/web/src/components/AppSidebar/SpaceSwitcher.tsx
+index 35f42e8..20b5ced 100644
+--- a/web/src/components/AppSidebar/SpaceSwitcher.tsx
++++ b/web/src/components/AppSidebar/SpaceSwitcher.tsx
+@@ -154,6 +154,8 @@ function SpaceSwitcher({ className, size = "md" }: { className?: string; size?:
+           align="start"
+           side="bottom"
+           sideOffset={4}
++          // The anchor sits in the fixed sidebar; absolute positioning would jump while the page scrolls.
++          positionMethod="fixed"
+           className="w-[min(15rem,calc(100vw-1rem))] max-h-[min(27rem,calc(100dvh-5rem))] overflow-y-auto p-0"
+           style={menuWidth ? { width: `${menuWidth}px` } : undefined}
+         >
+@@ -238,7 +240,11 @@ function SpaceSwitcher({ className, size = "md" }: { className?: string; size?:
+                       )}
+                       <span className="min-w-0 flex-1 truncate text-start">{selectedSpaceName ? spaceLabel : allSpacesLabel}</span>
+                     </SelectTrigger>
+-                    <SelectContent className="max-h-64 w-(--anchor-width) min-w-0 max-w-[calc(100vw-2rem)]" align="start">
++                    <SelectContent
++                      positionMethod="fixed"
++                      className="max-h-64 w-(--anchor-width) min-w-0 max-w-[calc(100vw-2rem)]"
++                      align="start"
++                    >
+                       <SelectItem value="all">
+                         <span className="flex items-center gap-2">
+                           <AstroidIcon className="size-4" />
+diff --git a/web/src/components/UserMenu.tsx b/web/src/components/UserMenu.tsx
+index aa58230..771ed1c 100644
+--- a/web/src/components/UserMenu.tsx
++++ b/web/src/components/UserMenu.tsx
+@@ -68,6 +68,8 @@ const PreferenceSubmenu = ({ icon: Icon, label, value, options, onChange, classN
+       sideOffset={8}
+       alignOffset={-4}
+       collisionAvoidance={{ fallbackAxisSide: "end" }}
++      // The scope panel lives in the fixed sidebar, so its submenus must not track document coordinates.
++      positionMethod="fixed"
+       size="sm"
+       className={className}
+     >
+diff --git a/web/src/components/ui/dropdown-menu.tsx b/web/src/components/ui/dropdown-menu.tsx
+index 77073ff..bf19ec6 100644
+--- a/web/src/components/ui/dropdown-menu.tsx
++++ b/web/src/components/ui/dropdown-menu.tsx
+@@ -20,12 +20,15 @@ const DropdownMenuTrigger = React.forwardRef<HTMLButtonElement, DropdownMenuPrim
+ DropdownMenuTrigger.displayName = "DropdownMenuTrigger";
+ 
+ type DropdownMenuContentProps = DropdownMenuPrimitive.Popup.Props &
+-  Pick<DropdownMenuPrimitive.Positioner.Props, "align" | "alignOffset" | "collisionAvoidance" | "side" | "sideOffset"> & {
++  Pick<
++    DropdownMenuPrimitive.Positioner.Props,
++    "align" | "alignOffset" | "collisionAvoidance" | "positionMethod" | "side" | "sideOffset"
++  > & {
+     size?: DropdownMenuSize;
+   };
+ 
+ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContentProps>(
+-  ({ className, align, alignOffset, collisionAvoidance, side, sideOffset = 4, size = "default", ...props }, ref) => {
++  ({ className, align, alignOffset, collisionAvoidance, positionMethod, side, sideOffset = 4, size = "default", ...props }, ref) => {
+     return (
+       <DropdownMenuSizeContext.Provider value={size}>
+         <DropdownMenuPrimitive.Portal>
+@@ -33,6 +36,7 @@ const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContent
+             align={align}
+             alignOffset={alignOffset}
+             collisionAvoidance={collisionAvoidance}
++            positionMethod={positionMethod}
+             side={side}
+             sideOffset={sideOffset}
+             className="isolate z-dropdown outline-none"
+diff --git a/web/src/components/ui/popover.tsx b/web/src/components/ui/popover.tsx
+index 42495ad..1c23f8d 100644
+--- a/web/src/components/ui/popover.tsx
++++ b/web/src/components/ui/popover.tsx
+@@ -14,14 +14,16 @@ PopoverTrigger.displayName = "PopoverTrigger";
+ 
+ const PopoverContent = React.forwardRef<
+   HTMLDivElement,
+-  PopoverPrimitive.Popup.Props & Pick<PopoverPrimitive.Positioner.Props, "anchor" | "align" | "alignOffset" | "side" | "sideOffset">
+->(({ className, anchor, align = "center", alignOffset, side, sideOffset = 4, ...props }, ref) => {
++  PopoverPrimitive.Popup.Props &
++    Pick<PopoverPrimitive.Positioner.Props, "anchor" | "align" | "alignOffset" | "positionMethod" | "side" | "sideOffset">
++>(({ className, anchor, align = "center", alignOffset, positionMethod, side, sideOffset = 4, ...props }, ref) => {
+   return (
+     <PopoverPrimitive.Portal>
+       <PopoverPrimitive.Positioner
+         anchor={anchor}
+         align={align}
+         alignOffset={alignOffset}
++        positionMethod={positionMethod}
+         side={side}
+         sideOffset={sideOffset}
+         className="isolate z-dropdown"
+diff --git a/web/src/components/ui/select.tsx b/web/src/components/ui/select.tsx
+index 4660ceb..36bc941 100644
+--- a/web/src/components/ui/select.tsx
++++ b/web/src/components/ui/select.tsx
+@@ -51,7 +51,7 @@ function SelectTrigger({
+ }
+ 
+ type SelectContentProps = SelectPrimitive.Popup.Props &
+-  Pick<SelectPrimitive.Positioner.Props, "align" | "alignItemWithTrigger" | "alignOffset" | "side" | "sideOffset">;
++  Pick<SelectPrimitive.Positioner.Props, "align" | "alignItemWithTrigger" | "alignOffset" | "positionMethod" | "side" | "sideOffset">;
+ 
+ function SelectContent({
+   className,
+@@ -59,6 +59,7 @@ function SelectContent({
+   align = "start",
+   alignItemWithTrigger = false,
+   alignOffset,
++  positionMethod,
+   side,
+   sideOffset = 4,
+   ...props
+@@ -69,6 +70,7 @@ function SelectContent({
+         align={align}
+         alignItemWithTrigger={alignItemWithTrigger}
+         alignOffset={alignOffset}
++        positionMethod={positionMethod}
+         side={side}
+         sideOffset={sideOffset}
+         className="isolate z-dropdown"
+diff --git a/web/tests/fixed-positioning.helpers.ts b/web/tests/fixed-positioning.helpers.ts
+new file mode 100644
+index 0000000..56a19ea
+--- /dev/null
++++ b/web/tests/fixed-positioning.helpers.ts
+@@ -0,0 +1,14 @@
++import { waitFor } from "@testing-library/react";
++import { expect } from "vitest";
++
++/**
++ * Waits until Base UI has finished its first positioning pass, then asserts the positioner uses
++ * fixed positioning. Its initial pass renders with `transition: none`, so checking earlier could
++ * pass or fail on that temporary state instead of the configured strategy.
++ */
++export const expectSettledFixedPositioner = async (popup: HTMLElement | null) => {
++  const positioner = popup?.parentElement as HTMLElement | null | undefined;
++  expect(positioner).toBeTruthy();
++  await waitFor(() => expect(positioner!.style.transition).not.toBe("none"));
++  expect(positioner!.style.position).toBe("fixed");
++};
+diff --git a/web/tests/space-switcher.test.tsx b/web/tests/space-switcher.test.tsx
+index 5ea5073..8092dc8 100644
+--- a/web/tests/space-switcher.test.tsx
++++ b/web/tests/space-switcher.test.tsx
+@@ -3,6 +3,7 @@ import { createMemoryRouter, RouterProvider, useLocation } from "react-router-do
+ import { beforeEach, describe, expect, it, vi } from "vitest";
+ import SpaceSwitcher from "@/components/AppSidebar/SpaceSwitcher";
+ import { getCollectionCreator, ROUTES, resolveCollectionRoute } from "@/router/routes";
++import { expectSettledFixedPositioner } from "./fixed-positioning.helpers";
+ 
+ const state = vi.hoisted(() => ({
+   currentUser: { name: "users/steven", username: "steven", displayName: "Steven", avatarUrl: "" } as
+@@ -220,6 +221,20 @@ describe("SpaceSwitcher", () => {
+     expect(state.selectSpace).toHaveBeenCalledWith(state.spaces[0]);
+   });
+ 
++  it.each(["md", "header"] as const)("keeps the %s popup anchored with fixed positioning while the page scrolls", async (size) => {
++    renderAt("/", size);
++    openSwitcher();
++    await expectSettledFixedPositioner(document.querySelector('[data-slot="popover-content"]'));
++  });
++
++  it("keeps the nested Space selector popup on fixed positioning", async () => {
++    renderAt();
++    openSwitcher();
++    fireEvent.click(screen.getByRole("combobox", { name: "space.switch" }));
++    await screen.findByRole("option", { name: "Product" });
++    await expectSettledFixedPositioner(document.querySelector('[data-slot="select-content"]'));
++  });
++
+   it("gives guests on Explore only the account panel, with no single-choice Browse control", () => {
+     state.currentUser = undefined;
+     renderAt("/explore");
+diff --git a/web/tests/user-menu.test.tsx b/web/tests/user-menu.test.tsx
+index 3006f81..5db59a1 100644
+--- a/web/tests/user-menu.test.tsx
++++ b/web/tests/user-menu.test.tsx
+@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
+ import UserMenu from "@/components/UserMenu";
+ import { loadLocale } from "@/utils/i18n";
+ import { loadTheme } from "@/utils/theme";
++import { expectSettledFixedPositioner } from "./fixed-positioning.helpers";
+ 
+ const mocks = vi.hoisted(() => ({
+   navigateTo: vi.fn(),
+@@ -118,6 +119,13 @@ describe("User menu panel", () => {
+     expect(mocks.navigateTo).toHaveBeenCalledWith("/about");
+   });
+ 
++  it.each([/setting.preference.theme/, /common.language/])("opens the %s submenu with fixed positioning", async (row) => {
++    renderMenu();
++    fireEvent.click(screen.getByRole("button", { name: row }));
++    const menu = await screen.findByRole("menu");
++    await expectSettledFixedPositioner(menu);
++  });
++
+   it("shows current preferences on rows that open their choices as submenus", async () => {
+     renderMenu();
+     fireEvent.click(screen.getByRole("button", { name: /setting.preference.theme.*Sync with system/ }));

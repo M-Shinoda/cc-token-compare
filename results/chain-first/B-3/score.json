@@ -1,0 +1,31 @@
+{
+  "arm": "B",
+  "rep": 3,
+  "cases": [
+    "case3",
+    "case4",
+    "case2",
+    "case1"
+  ],
+  "cost_usd": 0.7793894,
+  "input": 110,
+  "cache_write": 83540,
+  "cache_read": 2491999,
+  "output": 19780,
+  "turns": 54,
+  "compactions": 0,
+  "tests_passed": 3,
+  "headroom": {
+    "requests_with_messages": 54,
+    "tokens_original": 1753063,
+    "tokens_optimized": 1696688
+  },
+  "mcp": {
+    "headroom": "connected",
+    "serena": "connected"
+  },
+  "tools": {
+    "Grep": 2,
+    "Bash": 48
+  }
+}
